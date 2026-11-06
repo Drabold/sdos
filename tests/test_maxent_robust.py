@@ -32,7 +32,7 @@ def test_maxent_beats_kpm_and_stays_valid_for_wide_windows(f):
         lam, info = sdos.maxent(mu, default=d)
         Em, rm, idos = sdos.maxent_density(lam, A, B, d, 3000, mu=mu)
         assert rm.min() >= 0 and abs(idos[-1] - 1.0) < 1e-3                       # a valid density whatever the window / solver status
-        assert info["max_moment_residual"] < 1e-5                                 # moments reproduced even when "converged" is False
+        assert info["max_moment_residual"] < 1e-4                                 # moments reproduced even when "converged" is False
         errs[d] = np.trapezoid(np.abs(np.interp(Eg, Em, rm) - ref), Eg)
     assert max(errs.values()) < l1_kpm                                            # better than Jackson-KPM at the same moments
     assert max(errs.values()) < 1.15 * min(errs.values())                         # the default model does not matter

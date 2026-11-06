@@ -81,7 +81,7 @@ def test_cli_generalized_mass_omega_and_exact(tmp_path):
     out2 = tmp_path / "gen.dat"
     sdos.write_triplets(sp.diags(m).tocsr(), tmp_path / "B.dat")
     r2 = subprocess.run([sys.executable, "-m", "sdos", str(tmp_path / "phi.dat"), "--B", str(tmp_path / "B.dat"), "--binv", "chebyshev",
-                         "-M", "64", "-R", "3", "--seed", "1", "--emin", "-1e-6", "--emax", "3", "-o", str(out2)], capture_output=True, text=True)
+                         "-M", "64", "-R", "3", "--seed", "1", "--emin=-1e-6", "--emax=3", "-o", str(out2)], capture_output=True, text=True)
     assert r2.returncode == 0, r2.stderr[-400:]
 
 
