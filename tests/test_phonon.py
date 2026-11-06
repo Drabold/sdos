@@ -60,7 +60,7 @@ def test_negative_eigenvalues_are_reported_not_clipped():
     D = (A - (lam0[0] - 0.5) * sp.identity(n)).tocsr()        # PSD
     D = (D - 1.0 * sp.identity(n)).tocsr()                     # shift so that several eigenvalues are negative
     ev = sla.eigvalsh(D.toarray())
-    assert ev[0] < -0.5
+    assert ev[0] < -0.4                                         # exactly -0.5 by construction, up to rounding
     with pytest.warns(UserWarning, match="negative eigenvalues indicated"):
         res = sdos.vdos(D, M=64, R=10, seed=1, bounds=(ev[0], ev[-1]))
     assert res["negative_indicated"] and res["lambda_min"] < 0 and res["E"].min() < 0       # lambda < 0 kept in rho(lambda)
