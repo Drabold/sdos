@@ -527,7 +527,7 @@ The ingredients are established: stochastic traces, KPM, Maxent, and non-orthogo
 The moment-based computations scale linearly in the number of orbitals for explicit matrices (exponent $1.01$) and nearly so for the matrix-free crystal ($1.12$). Three conventions of the DFTB file format are not in its description, and are recorded here. The limits are stated in Sec.~\ref{sec:scaling}.
 
 \paragraph*{Availability.}
-The package is licensed under BSD-3-Clause (copyright D.~A.~Drabold, 2026) and lives in a local repository that has not yet been released; the DFTB parameter files are not bundled.
+The package is licensed under BSD-3-Clause (copyright D.~A.~Drabold, 2026) and is available at \url{https://github.com/Drabold/sdos} and archived on Zenodo (version 0.1.0, concept DOI \href{https://doi.org/10.5281/zenodo.24023874}{10.5281/zenodo.24023874}); it installs from a clone with \texttt{pip install -e .}. The repository contains the examples and benchmark scripts of this report; the large run data (million-atom structures and exact spectra) and the DFTB parameter files are not included.
 All scripts, saved results and the generation of the figures and tables of this report are in the \texttt{examples/} and \texttt{paper/} directories of the repository; the tests run with \texttt{pytest}.
 
 \begin{acknowledgments}

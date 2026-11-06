@@ -9,4 +9,6 @@ authors:
     given-names: David A.
     email: drabold@ohio.edu
     affiliation: Ohio University
-# date-released, doi (Zenodo) and the arXiv reference are added at the first release.
+date-released: "2026-11-06"
+doi: 10.5281/zenodo.24023874
+repository-code: "https://github.com/Drabold/sdos"

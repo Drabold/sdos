@@ -83,3 +83,8 @@ Every option below is a keyword of `sdos.dos` / `sdos.estimate_dos` (and a flag 
   Probing is not available for them.  A diagonal B (masses) is mass-weighted once and no solves are done.
 * Shift-invert windows factorize `A - σ`; the fill grows superlinearly in 3D, so they are not O(N).
 * License: BSD-3-Clause.
+
+## Citation
+
+Archived on Zenodo, concept DOI [10.5281/zenodo.24023874](https://doi.org/10.5281/zenodo.24023874) (always the latest version); see `CITATION.cff`.
+
