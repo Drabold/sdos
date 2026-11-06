@@ -1,0 +1,26 @@
+Geometry = GenFormat {
+  <<< "geo.gen"
+}
+Hamiltonian = DFTB {
+  SCC = No
+  SlaterKosterFiles = Type2FileNames {
+    Prefix = "/home/drabold/opt/slako/pbc-0-3/"
+    Separator = "-"
+    Suffix = ".skf"
+  }
+  MaxAngularMomentum {
+    Si = "p"
+  }
+  KPointsAndWeights = {
+    0.0 0.0 0.0 1.0
+  }
+  Filling = Fermi {
+    Temperature [K] = 0.0001
+  }
+}
+Options {
+  WriteRealHS = Yes
+}
+ParserOptions {
+  ParserVersion = 12
+}

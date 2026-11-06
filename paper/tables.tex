@@ -1,0 +1,76 @@
+\begin{table*}[t]\caption{Truncation error on DTW4096 (Kwon, $\Gamma$) with \emph{exact} moments (no sampling noise): band-energy error and $L_1$ distance to the exact spectrum broadened by 0.05~eV. Maxent: exact-moment constraints; dashes: the solver did not reach tolerance $10^{-9}$ in 300 Newton steps, so no result is reported (no steps are listed either). Maxent $s_0$: every moment but $\mu_0$ given the uncertainty $s_0=10^{-4}$ (Sec.~\ref{sec:recon}); all converged.}\label{tab:acc}\begin{ruledtabular}\begin{tabular}{rrrrrrrrr}
+$M$ & \multicolumn{3}{c}{$\Delta E_{\rm BS}$ (meV/atom)} & \multicolumn{3}{c}{pointwise $L_1$} & \multicolumn{2}{c}{Newton steps} \\ & KPM & Maxent & Maxent $s_0$ & KPM & Maxent & Maxent $s_0$ & Maxent & Maxent $s_0$ \\ \colrule
+20 & $-198.23$ & $+22.52$ & $+22.52$ & 3.3493 & 0.1122 & 0.1122 & 9 & 9 \\
+40 & $-18.24$ & $+1.56$ & $+1.56$ & 0.2862 & 0.0383 & 0.0383 & 11 & 11 \\
+70 & $-0.99$ & $+0.12$ & $+0.10$ & 0.0715 & 0.0116 & 0.0114 & 34 & 17 \\
+100 & $+0.26$ & -- & $+0.02$ & 0.0332 & -- & 0.0082 & -- & 22 \\
+170 & $+0.30$ & -- & $-0.00$ & 0.0119 & -- & 0.0068 & -- & 23 \\
+300 & $+0.14$ & -- & $-0.01$ & 0.0053 & -- & 0.0082 & -- & 24 \\
+400 & $+0.09$ & -- & $-0.02$ & 0.0037 & -- & 0.0123 & -- & 22 \\
+\end{tabular}\end{ruledtabular}\end{table*}
+
+\begin{table}[t]\caption{Random vectors and exact low moments, band energy of DTW4096 (Kwon, $M=100$, 12 seeds with $R=2$ each). Efficiency = (variance $\times$ time)$^{-1}$ relative to plain Rademacher vectors; the uncertainty of each entry is about 30\%.}\label{tab:vec}\begin{ruledtabular}\begin{tabular}{lrrr}
+vectors & std (meV/at.) & time (s) & efficiency \\ \colrule
+Rad. & 192.8 & 0.23 & 1.0$\times$ \\
+Gauss. & 315.4 & 0.23 & 0.4$\times$ \\
+impartial (3) & 25.6 & 0.35 & 36.7$\times$ \\
+Rad. + exact K=4 & 11.2 & 1.75 & 38.0$\times$ \\
+Rad. + exact K=8 & 4.4 & 8.99 & 47.3$\times$ \\
+Rad. + exact K=16 & 1.4 & 79.84 & 52.2$\times$ \\
+\end{tabular}\end{ruledtabular}\end{table}
+
+\begin{table*}[t]\caption{Orthogonal case: Kwon tight binding on periodic tilings of DTW4096, KPM with $M=100$ moments and $R=2$ vectors, 4 threads; columns 3--7: no exact-moment substitution ($K=0$); last two columns: the default $K=4$ (moments, and the whole call including build and bounds), from a separate run. Timings are one run each.}\label{tab:kw}\begin{ruledtabular}\begin{tabular}{rrrrrrrrr}
+atoms & orbitals & build & bounds & moments & total & peak mem. & moments, $K=4$ & total, $K=4$ \\ & & (s) & (s) & (s) & (s) & (GB) & (s) & (s) \\ \colrule
+4\,096 & 16\,384 & 0.1 & 0.1 & 0.1 & 0.3 & 0.15 & 1.0 & 1.2 \\
+32\,768 & 131\,072 & 0.6 & 1.0 & 0.9 & 2.5 & 0.45 & 8.6 & 10.0 \\
+110\,592 & 442\,368 & 2.1 & 3.6 & 2.8 & 8.5 & 1.2 & 31.8 & 36.6 \\
+262\,144 & 1\,048\,576 & 4.9 & 8.9 & 7.1 & 21.0 & 3.1 & 92.3 & 104.2 \\
+512\,000 & 2\,048\,000 & 9.7 & 17.4 & 14.4 & 41.5 & 5.5 & 177.8 & 201.0 \\
+884\,736 & 3\,538\,944 & 17.3 & 29.4 & 24.1 & 70.8 & 9.7 & 341.8 & 382.5 \\
+\end{tabular}\end{ruledtabular}\end{table*}
+
+\begin{table*}[t]\caption{Non-orthogonal case: DFTB ($pbc$-0-3, non-self-consistent) $H$ and $S$ on tilings of DTW4096, KPM with $M=100$, $R=2$; time of the whole density-of-states call for the three ways of applying $S^{-1}$ (PCG with block-Jacobi, Chebyshev polynomial, PCG with IC(0)). IC(0) was run only for the small sizes (its setup is a Python loop). At 262\,144 atoms the Chebyshev row is a rerun under a 16~GB cap (peak 14.0~GB; the first attempt, under a 10~GB cap, was killed); the PCG row at that size was recovered from the log of the first run (peak 9.8~GB), and the build time is that of the rerun.}\label{tab:sk}\begin{ruledtabular}\begin{tabular}{rrrrrrrrr}
+atoms & orbitals & nnz/row & build & PCG (BJ) & Chebyshev & PCG (IC(0)) & peak mem., PCG & peak mem., Cheb. \\ & & & (s) & (s) & (s) & (s) & (GB) & (GB) \\ \colrule
+4\,096 & 16\,384 & 179 & 1 & 15 & 18 & 35 & 0.35 & 0.35 \\
+32\,768 & 131\,072 & 179 & 4 & 117 & 142 & 288 & 1.4 & 1.8 \\
+110\,592 & 442\,368 & 179 & 15 & 380 & 398 & -- & 4.3 & 5.8 \\
+262\,144 & 1\,048\,576 & 179 & 26 & 806 & 912 & -- & 9.8 & 14 \\
+\end{tabular}\end{ruledtabular}\end{table*}
+
+\begin{table*}[t]\caption{DFTB electronic problem of DTW4096 (16\,384 orbitals, 179 nonzeros per row): KPM, $M=170$, $R=6$. At $\Gamma$ the three ways of applying $S^{-1}$ give identical band energies (the same moments); the error is against the dense generalized spectrum and is a sampling error (this run, seed 11: $-70$~meV/atom, with $\pm35$ the standard error estimated from its six vectors; other seeds give $-122$, $+69$ and $+153$~meV/atom with estimated errors of 84--94, so that estimate is itself uncertain and the spread over seeds, about 110~meV/atom at $R=6$, is the reliable figure; see text), and $L_1$ is the distance to the exact spectrum broadened by 0.1~eV. The dense complex generalized problem does not fit in memory here, so the $\mathbf k$ point is compared with the $\Gamma$ spectrum of the same cell.}\label{tab:dd}\begin{ruledtabular}\begin{tabular}{lrrrrrrr}
+$S^{-1}$ by & \multicolumn{4}{c}{$\Gamma$ (real)} & \multicolumn{3}{c}{$\mathbf k$ (complex Hermitian)} \\ & time (s) & iter./solve & $\Delta E_{\rm BS}$ (meV/atom) & $L_1$ to exact & time (s) & iter./solve & $L_1$ to $\Gamma$ exact \\ \colrule
+PCG, block-Jacobi & 54 & 23.6 & $-70.0\pm35$ & 0.024 & 125 & 23.6 & 0.021 \\
+PCG, IC(0) & 79 & 11.0 & $-70.0\pm35$ & 0.024 & 155 & 11.0 & 0.021 \\
+Chebyshev polynomial & 64 & 26.0 & $-70.0\pm35$ & 0.024 & 135 & 26.0 & 0.021 \\
+\end{tabular}\end{ruledtabular}\end{table*}
+
+\begin{table*}[t]\caption{Harmonic thermodynamics of DTW4096 (4096 atoms, relaxed with each potential): matrix-free sdos ($M=170$, $R=4$, two force calls per product, three rigid translations removed exactly) against the exact dynamical matrix. $C_v$ in $k_B$/atom.}\label{tab:ph}\begin{ruledtabular}\begin{tabular}{llrrrr}
+potential & method & ZPE (meV/atom) & $C_v$(100 K) & $C_v$(300 K) & $C_v$(600 K) \\ \colrule
+SW & exact (dense) & 66.935 & 0.8558 & 2.2935 & 2.7863 \\
+SW & sdos KPM & 66.573 & 0.8637 & 2.3002 & 2.7890 \\
+SW & sdos Maxent & 66.546 & 0.8647 & 2.3007 & 2.7892 \\
+\colrule
+ACE & exact (GPU \texttt{dynamical\_matrix}) & 60.104 & 0.9369 & 2.4127 & 2.8294 \\
+ACE & sdos KPM & 59.709 & 0.9499 & 2.4192 & 2.8319 \\
+ACE & sdos Maxent & 59.709 & 0.9499 & 2.4193 & 2.8319 \\
+\end{tabular}\end{ruledtabular}\end{table*}
+
+\begin{table}[t]\caption{Exact HOMO--LUMO gaps (inertia bisection, Xu Hamiltonian, LCBOP-relaxed icosahedral fullerenes) and the confined-Dirac-cone scaling; $\hbar v_F=4.196$~eV\,\AA\ from the graphene bands of the same Hamiltonian, $R_{\rm eq}=(N_{\rm at} A_0/4\pi)^{1/2}$ with $A_0$ the graphene area per atom.}\label{tab:fu}\begin{ruledtabular}\begin{tabular}{rrrr}
+C$_{N_{\rm at}}$ & gap (eV) & $R_{\rm eq}$ (\AA) & gap$\,R_{\rm eq}/\hbar v_F$ \\ \colrule
+60 & 1.537 & 3.54 & 1.295 \\
+240 & 1.015 & 7.07 & 1.711 \\
+540 & 0.713 & 10.61 & 1.803 \\
+960 & 0.549 & 14.15 & 1.851 \\
+1500 & 0.446 & 17.68 & 1.879 \\
+2160 & 0.374 & 21.22 & 1.891 \\
+2940 & 0.323 & 24.76 & 1.906 \\
+3840 & 0.284 & 28.29 & 1.915 \\
+4860 & 0.253 & 31.83 & 1.919 \\
+6000 & 0.228 & 35.36 & 1.922 \\
+\end{tabular}\end{ruledtabular}\end{table}
+
+\begin{table}[t]\caption{Time of the Chebyshev recursion against the number of nonzeros per row (random symmetric sparse matrix, $N=50000$, $M=100$, $R=2$ Rademacher vectors, 4 threads; bare recursion: no bounds, no reconstruction).}\label{tab:sp}\begin{ruledtabular}\begin{tabular}{rrrrrrrr}
+nonzeros per row & 3 & 7 & 15 & 31 & 63 & 127 & 255 \\ \colrule
+time (s) & 0.06 & 0.09 & 0.13 & 0.26 & 0.53 & 1.11 & 2.28 \\
+ns per (nnz $M R$) & 1.47 & 1.07 & 0.80 & 0.80 & 0.82 & 0.87 & 0.89 \\
+\end{tabular}\end{ruledtabular}\end{table}

@@ -1,0 +1,1363 @@
+{
+ "kpm": {
+  "status": "OK",
+  "doi": "10.1103/revmodphys.78.275",
+  "title": "The kernel polynomial method",
+  "journal": "Reviews of Modern Physics",
+  "volume": "78",
+  "page": "275",
+  "year": 2006,
+  "authors": [
+   [
+    "Alexander",
+    "Wei\u00dfe"
+   ],
+   [
+    "Gerhard",
+    "Wellein"
+   ],
+   [
+    "Andreas",
+    "Alvermann"
+   ],
+   [
+    "Holger",
+    "Fehske"
+   ]
+  ]
+ },
+ "silver1996": {
+  "status": "OK",
+  "doi": "10.1006/jcph.1996.0048",
+  "title": "Kernel Polynomial Approximations for Densities of States and Spectral Functions",
+  "journal": "Journal of Computational Physics",
+  "volume": "124",
+  "page": "115",
+  "year": 1996,
+  "authors": [
+   [
+    "R.N.",
+    "Silver"
+   ],
+   [
+    "H.",
+    "Roeder"
+   ],
+   [
+    "A.F.",
+    "Voter"
+   ],
+   [
+    "J.D.",
+    "Kress"
+   ]
+  ]
+ },
+ "silver1994": {
+  "status": "MISMATCH(3/4)",
+  "doi": "10.1142/s0129183194000842",
+  "title": "DENSITIES OF STATES OF MEGA-DIMENSIONAL HAMILTONIAN MATRICES",
+  "journal": "International Journal of Modern Physics C",
+  "volume": "05",
+  "page": "735",
+  "year": 1994,
+  "authors": [
+   [
+    "R.N.",
+    "SILVER"
+   ],
+   [
+    "H.",
+    "R\u00d6DER"
+   ]
+  ]
+ },
+ "drabold1993": {
+  "status": "OK",
+  "doi": "10.1103/physrevlett.70.3631",
+  "title": "Maximum entropy approach for linear scaling in the electronic structure problem",
+  "journal": "Physical Review Letters",
+  "volume": "70",
+  "page": "3631",
+  "year": 1993,
+  "authors": [
+   [
+    "David A.",
+    "Drabold"
+   ],
+   [
+    "Otto F.",
+    "Sankey"
+   ]
+  ]
+ },
+ "hutchinson": {
+  "status": "OK",
+  "doi": "10.1080/03610919008812866",
+  "title": "A stochastic estimator of the trace of the influence matrix for laplacian smoothing splines",
+  "journal": "Communications in Statistics - Simulation and Computation",
+  "volume": "19",
+  "page": "433",
+  "year": 1990,
+  "authors": [
+   [
+    "M.F.",
+    "Hutchinson"
+   ]
+  ]
+ },
+ "mead": {
+  "status": "OK",
+  "doi": "10.1063/1.526446",
+  "title": "Maximum entropy in the problem of moments",
+  "journal": "Journal of Mathematical Physics",
+  "volume": "25",
+  "page": "2404",
+  "year": 1984,
+  "authors": [
+   [
+    "Lawrence R.",
+    "Mead"
+   ],
+   [
+    "N.",
+    "Papanicolaou"
+   ]
+  ]
+ },
+ "goedecker": {
+  "status": "OK",
+  "doi": "10.1103/revmodphys.71.1085",
+  "title": "Linear scaling electronic structure methods",
+  "journal": "Reviews of Modern Physics",
+  "volume": "71",
+  "page": "1085",
+  "year": 1999,
+  "authors": [
+   [
+    "Stefan",
+    "Goedecker"
+   ]
+  ]
+ },
+ "kwon": {
+  "status": "OK",
+  "doi": "10.1103/physrevb.49.7242",
+  "title": "Transferable tight-binding models for silicon",
+  "journal": "Physical Review B",
+  "volume": "49",
+  "page": "7242",
+  "year": 1994,
+  "authors": [
+   [
+    "I.",
+    "Kwon"
+   ],
+   [
+    "R.",
+    "Biswas"
+   ],
+   [
+    "C. Z.",
+    "Wang"
+   ],
+   [
+    "K. M.",
+    "Ho"
+   ],
+   [
+    "C. M.",
+    "Soukoulis"
+   ]
+  ]
+ },
+ "xu": {
+  "status": "OK",
+  "doi": "10.1088/0953-8984/4/28/006",
+  "title": "A transferable tight-binding potential for carbon",
+  "journal": "Journal of Physics: Condensed Matter",
+  "volume": "4",
+  "page": "6047",
+  "year": 1992,
+  "authors": [
+   [
+    "C H",
+    "Xu"
+   ],
+   [
+    "C Z",
+    "Wang"
+   ],
+   [
+    "C T",
+    "Chan"
+   ],
+   [
+    "K M",
+    "Ho"
+   ]
+  ]
+ },
+ "deringer": {
+  "status": "OK",
+  "doi": "10.1038/s41586-020-03072-z",
+  "title": "Origins of structural and electronic transitions in disordered silicon",
+  "journal": "Nature",
+  "volume": "589",
+  "page": "59",
+  "year": 2021,
+  "authors": [
+   [
+    "Volker L.",
+    "Deringer"
+   ],
+   [
+    "Noam",
+    "Bernstein"
+   ],
+   [
+    "G\u00e1bor",
+    "Cs\u00e1nyi"
+   ],
+   [
+    "Chiheb",
+    "Ben Mahmoud"
+   ],
+   [
+    "Michele",
+    "Ceriotti"
+   ],
+   [
+    "Mark",
+    "Wilson"
+   ],
+   [
+    "David A.",
+    "Drabold"
+   ],
+   [
+    "Stephen R.",
+    "Elliott"
+   ]
+  ]
+ },
+ "ssc96": {
+  "status": "OK",
+  "doi": "10.1016/0038-1098(95)00562-5",
+  "title": "Spectral properties of large fullerenes: From cluster to crystal",
+  "journal": "Solid State Communications",
+  "volume": "96",
+  "page": "833",
+  "year": 1995,
+  "authors": [
+   [
+    "David A.",
+    "Drabold"
+   ],
+   [
+    "Pablo",
+    "Ordej\u00f3n"
+   ],
+   [
+    "JianJun",
+    "Dong"
+   ],
+   [
+    "Richard M.",
+    "Martin"
+   ]
+  ]
+ },
+ "itoh": {
+  "status": "OK",
+  "doi": "10.1103/physrevb.53.2132",
+  "title": "Structure and energetics of giant fullerenes: An order-<i>N</i>molecular-dynamics study",
+  "journal": "Physical Review B",
+  "volume": "53",
+  "page": "2132",
+  "year": 1996,
+  "authors": [
+   [
+    "Satoshi",
+    "Itoh"
+   ],
+   [
+    "Pablo",
+    "Ordej\u00f3n"
+   ],
+   [
+    "David A.",
+    "Drabold"
+   ],
+   [
+    "Richard M.",
+    "Martin"
+   ]
+  ]
+ },
+ "lcbop": {
+  "status": "OK",
+  "doi": "10.1103/physrevb.68.024107",
+  "title": "Intrinsic long-range bond-order potential for carbon: Performance in Monte Carlo simulations of graphitization",
+  "journal": "Physical Review B",
+  "volume": "68",
+  "page": "024107",
+  "year": 2003,
+  "authors": [
+   [
+    "J. H.",
+    "Los"
+   ],
+   [
+    "A.",
+    "Fasolino"
+   ]
+  ]
+ },
+ "porezag": {
+  "status": "OK",
+  "doi": "10.1103/physrevb.51.12947",
+  "title": "Construction of tight-binding-like potentials on the basis of density-functional theory: Application to carbon",
+  "journal": "Physical Review B",
+  "volume": "51",
+  "page": "12947",
+  "year": 1995,
+  "authors": [
+   [
+    "D.",
+    "Porezag"
+   ],
+   [
+    "Th.",
+    "Frauenheim"
+   ],
+   [
+    "Th.",
+    "K\u00f6hler"
+   ],
+   [
+    "G.",
+    "Seifert"
+   ],
+   [
+    "R.",
+    "Kaschner"
+   ]
+  ]
+ },
+ "elstner": {
+  "status": "OK",
+  "doi": "10.1103/physrevb.58.7260",
+  "title": "Self-consistent-charge density-functional tight-binding method for simulations of complex materials properties",
+  "journal": "Physical Review B",
+  "volume": "58",
+  "page": "7260",
+  "year": 1998,
+  "authors": [
+   [
+    "M.",
+    "Elstner"
+   ],
+   [
+    "D.",
+    "Porezag"
+   ],
+   [
+    "G.",
+    "Jungnickel"
+   ],
+   [
+    "J.",
+    "Elsner"
+   ],
+   [
+    "M.",
+    "Haugk"
+   ],
+   [
+    "Th.",
+    "Frauenheim"
+   ],
+   [
+    "S.",
+    "Suhai"
+   ],
+   [
+    "G.",
+    "Seifert"
+   ]
+  ]
+ },
+ "dftbplus": {
+  "status": "OK",
+  "doi": "10.1063/1.5143190",
+  "title": "DFTB+, a software package for efficient approximate density functional theory based atomistic simulations",
+  "journal": "The Journal of Chemical Physics",
+  "volume": "152",
+  "page": "124101",
+  "year": 2020,
+  "authors": [
+   [
+    "B.",
+    "Hourahine"
+   ],
+   [
+    "B.",
+    "Aradi"
+   ],
+   [
+    "V.",
+    "Blum"
+   ],
+   [
+    "F.",
+    "Bonaf\u00e9"
+   ],
+   [
+    "A.",
+    "Buccheri"
+   ],
+   [
+    "C.",
+    "Camacho"
+   ],
+   [
+    "C.",
+    "Cevallos"
+   ],
+   [
+    "M. Y.",
+    "Deshaye"
+   ],
+   [
+    "T.",
+    "Dumitric\u0103"
+   ],
+   [
+    "A.",
+    "Dominguez"
+   ],
+   [
+    "S.",
+    "Ehlert"
+   ],
+   [
+    "M.",
+    "Elstner"
+   ],
+   [
+    "T.",
+    "van der Heide"
+   ],
+   [
+    "J.",
+    "Hermann"
+   ],
+   [
+    "S.",
+    "Irle"
+   ],
+   [
+    "J. J.",
+    "Kranz"
+   ],
+   [
+    "C.",
+    "K\u00f6hler"
+   ],
+   [
+    "T.",
+    "Kowalczyk"
+   ],
+   [
+    "T.",
+    "Kuba\u0159"
+   ],
+   [
+    "I. S.",
+    "Lee"
+   ],
+   [
+    "V.",
+    "Lutsker"
+   ],
+   [
+    "R. J.",
+    "Maurer"
+   ],
+   [
+    "S. K.",
+    "Min"
+   ],
+   [
+    "I.",
+    "Mitchell"
+   ],
+   [
+    "C.",
+    "Negre"
+   ],
+   [
+    "T. A.",
+    "Niehaus"
+   ],
+   [
+    "A. M. N.",
+    "Niklasson"
+   ],
+   [
+    "A. J.",
+    "Page"
+   ],
+   [
+    "A.",
+    "Pecchia"
+   ],
+   [
+    "G.",
+    "Penazzi"
+   ],
+   [
+    "M. P.",
+    "Persson"
+   ],
+   [
+    "J.",
+    "\u0158ez\u00e1\u010d"
+   ],
+   [
+    "C. G.",
+    "S\u00e1nchez"
+   ],
+   [
+    "M.",
+    "Sternberg"
+   ],
+   [
+    "M.",
+    "St\u00f6hr"
+   ],
+   [
+    "F.",
+    "Stuckenberg"
+   ],
+   [
+    "A.",
+    "Tkatchenko"
+   ],
+   [
+    "V. W.-z.",
+    "Yu"
+   ],
+   [
+    "T.",
+    "Frauenheim"
+   ]
+  ]
+ },
+ "siesta2002": {
+  "status": "OK",
+  "doi": "10.1088/0953-8984/14/11/302",
+  "title": "The SIESTA method for\n                    <i>ab initio</i>\n                    order-\n                    <i>N</i>\n                    materials simulation",
+  "journal": "Journal of Physics: Condensed Matter",
+  "volume": "14",
+  "page": "2745",
+  "year": 2002,
+  "authors": [
+   [
+    "Jos\u00e9 M",
+    "Soler"
+   ],
+   [
+    "Emilio",
+    "Artacho"
+   ],
+   [
+    "Julian D",
+    "Gale"
+   ],
+   [
+    "Alberto",
+    "Garc\u00eda"
+   ],
+   [
+    "Javier",
+    "Junquera"
+   ],
+   [
+    "Pablo",
+    "Ordej\u00f3n"
+   ],
+   [
+    "Daniel",
+    "S\u00e1nchez-Portal"
+   ]
+  ]
+ },
+ "siesta2020": {
+  "status": "OK",
+  "doi": "10.1063/5.0005077",
+  "title": "S\n                    <scp>iesta</scp>\n                    : Recent developments and applications",
+  "journal": "The Journal of Chemical Physics",
+  "volume": "152",
+  "page": "204108",
+  "year": 2020,
+  "authors": [
+   [
+    "Alberto",
+    "Garc\u00eda"
+   ],
+   [
+    "Nick",
+    "Papior"
+   ],
+   [
+    "Arsalan",
+    "Akhtar"
+   ],
+   [
+    "Emilio",
+    "Artacho"
+   ],
+   [
+    "Volker",
+    "Blum"
+   ],
+   [
+    "Emanuele",
+    "Bosoni"
+   ],
+   [
+    "Pedro",
+    "Brandimarte"
+   ],
+   [
+    "Mads",
+    "Brandbyge"
+   ],
+   [
+    "J. I.",
+    "Cerd\u00e1"
+   ],
+   [
+    "Fabiano",
+    "Corsetti"
+   ],
+   [
+    "Ram\u00f3n",
+    "Cuadrado"
+   ],
+   [
+    "Vladimir",
+    "Dikan"
+   ],
+   [
+    "Jaime",
+    "Ferrer"
+   ],
+   [
+    "Julian",
+    "Gale"
+   ],
+   [
+    "Pablo",
+    "Garc\u00eda-Fern\u00e1ndez"
+   ],
+   [
+    "V. M.",
+    "Garc\u00eda-Su\u00e1rez"
+   ],
+   [
+    "Sandra",
+    "Garc\u00eda"
+   ],
+   [
+    "Georg",
+    "Huhs"
+   ],
+   [
+    "Sergio",
+    "Illera"
+   ],
+   [
+    "Richard",
+    "Koryt\u00e1r"
+   ],
+   [
+    "Peter",
+    "Koval"
+   ],
+   [
+    "Irina",
+    "Lebedeva"
+   ],
+   [
+    "Lin",
+    "Lin"
+   ],
+   [
+    "Pablo",
+    "L\u00f3pez-Tarifa"
+   ],
+   [
+    "Sara G.",
+    "Mayo"
+   ],
+   [
+    "Stephan",
+    "Mohr"
+   ],
+   [
+    "Pablo",
+    "Ordej\u00f3n"
+   ],
+   [
+    "Andrei",
+    "Postnikov"
+   ],
+   [
+    "Yann",
+    "Pouillon"
+   ],
+   [
+    "Miguel",
+    "Pruneda"
+   ],
+   [
+    "Roberto",
+    "Robles"
+   ],
+   [
+    "Daniel",
+    "S\u00e1nchez-Portal"
+   ],
+   [
+    "Jose M.",
+    "Soler"
+   ],
+   [
+    "Rafi",
+    "Ullah"
+   ],
+   [
+    "Victor Wen-zhe",
+    "Yu"
+   ],
+   [
+    "Javier",
+    "Junquera"
+   ]
+  ]
+ },
+ "lammps": {
+  "status": "OK",
+  "doi": "10.1016/j.cpc.2021.108171",
+  "title": "LAMMPS - a flexible simulation tool for particle-based materials modeling at the atomic, meso, and continuum scales",
+  "journal": "Computer Physics Communications",
+  "volume": "271",
+  "page": "108171",
+  "year": 2022,
+  "authors": [
+   [
+    "Aidan P.",
+    "Thompson"
+   ],
+   [
+    "H. Metin",
+    "Aktulga"
+   ],
+   [
+    "Richard",
+    "Berger"
+   ],
+   [
+    "Dan S.",
+    "Bolintineanu"
+   ],
+   [
+    "W. Michael",
+    "Brown"
+   ],
+   [
+    "Paul S.",
+    "Crozier"
+   ],
+   [
+    "Pieter J.",
+    "in 't Veld"
+   ],
+   [
+    "Axel",
+    "Kohlmeyer"
+   ],
+   [
+    "Stan G.",
+    "Moore"
+   ],
+   [
+    "Trung Dac",
+    "Nguyen"
+   ],
+   [
+    "Ray",
+    "Shan"
+   ],
+   [
+    "Mark J.",
+    "Stevens"
+   ],
+   [
+    "Julien",
+    "Tranchida"
+   ],
+   [
+    "Christian",
+    "Trott"
+   ],
+   [
+    "Steven J.",
+    "Plimpton"
+   ]
+  ]
+ },
+ "ace": {
+  "status": "OK",
+  "doi": "10.1103/physrevb.99.014104",
+  "title": "Atomic cluster expansion for accurate and transferable interatomic potentials",
+  "journal": "Physical Review B",
+  "volume": "99",
+  "page": "014104",
+  "year": 2019,
+  "authors": [
+   [
+    "Ralf",
+    "Drautz"
+   ]
+  ]
+ },
+ "pace": {
+  "status": "OK",
+  "doi": "10.1038/s41524-021-00559-9",
+  "title": "Performant implementation of the atomic cluster expansion (PACE) and application to copper and silicon",
+  "journal": "npj Computational Materials",
+  "volume": "7",
+  "page": "97",
+  "year": 2021,
+  "authors": [
+   [
+    "Yury",
+    "Lysogorskiy"
+   ],
+   [
+    "Cas van der",
+    "Oord"
+   ],
+   [
+    "Anton",
+    "Bochkarev"
+   ],
+   [
+    "Sarath",
+    "Menon"
+   ],
+   [
+    "Matteo",
+    "Rinaldi"
+   ],
+   [
+    "Thomas",
+    "Hammerschmidt"
+   ],
+   [
+    "Matous",
+    "Mrovec"
+   ],
+   [
+    "Aidan",
+    "Thompson"
+   ],
+   [
+    "G\u00e1bor",
+    "Cs\u00e1nyi"
+   ],
+   [
+    "Christoph",
+    "Ortner"
+   ],
+   [
+    "Ralf",
+    "Drautz"
+   ]
+  ]
+ },
+ "sw": {
+  "status": "OK",
+  "doi": "10.1103/physrevb.31.5262",
+  "title": "Computer simulation of local order in condensed phases of silicon",
+  "journal": "Physical Review B",
+  "volume": "31",
+  "page": "5262",
+  "year": 1985,
+  "authors": [
+   [
+    "Frank H.",
+    "Stillinger"
+   ],
+   [
+    "Thomas A.",
+    "Weber"
+   ]
+  ]
+ },
+ "keating": {
+  "status": "OK",
+  "doi": "10.1103/physrev.145.637",
+  "title": "Effect of Invariance Requirements on the Elastic Strain Energy of Crystals with Application to the Diamond Structure",
+  "journal": "Physical Review",
+  "volume": "145",
+  "page": "637",
+  "year": 1966,
+  "authors": [
+   [
+    "P. N.",
+    "Keating"
+   ]
+  ]
+ },
+ "dtw": {
+  "status": "OK",
+  "doi": "10.1103/physrevb.52.5685",
+  "title": "Computer model of tetrahedral amorphous diamond",
+  "journal": "Physical Review B",
+  "volume": "52",
+  "page": "5685",
+  "year": 1995,
+  "authors": [
+   [
+    "B. R.",
+    "Djordjevi\u0107"
+   ],
+   [
+    "M. F.",
+    "Thorpe"
+   ],
+   [
+    "F.",
+    "Wooten"
+   ]
+  ]
+ },
+ "www": {
+  "status": "OK",
+  "doi": "10.1103/physrevlett.54.1392",
+  "title": "Computer Generation of Structural Models of Amorphous Si and Ge",
+  "journal": "Physical Review Letters",
+  "volume": "54",
+  "page": "1392",
+  "year": 1985,
+  "authors": [
+   [
+    "F.",
+    "Wooten"
+   ],
+   [
+    "K.",
+    "Winer"
+   ],
+   [
+    "D.",
+    "Weaire"
+   ]
+  ]
+ },
+ "zhou": {
+  "status": "OK",
+  "doi": "10.1016/j.jcp.2006.03.017",
+  "title": "Self-consistent-field calculations using Chebyshev-filtered subspace iteration",
+  "journal": "Journal of Computational Physics",
+  "volume": "219",
+  "page": "172",
+  "year": 2006,
+  "authors": [
+   [
+    "Yunkai",
+    "Zhou"
+   ],
+   [
+    "Yousef",
+    "Saad"
+   ],
+   [
+    "Murilo L.",
+    "Tiago"
+   ],
+   [
+    "James R.",
+    "Chelikowsky"
+   ]
+  ]
+ },
+ "meijerink": {
+  "status": "OK",
+  "doi": "10.2307/2005786",
+  "title": "An Iterative Solution Method for Linear Systems of Which the Coefficient Matrix is a Symmetric M-Matrix",
+  "journal": "Mathematics of Computation",
+  "volume": "31",
+  "page": "148",
+  "year": 1977,
+  "authors": [
+   [
+    "J. A.",
+    "Meijerink"
+   ],
+   [
+    "H. A.",
+    "van der Vorst"
+   ]
+  ]
+ },
+ "manteuffel": {
+  "status": "OK",
+  "doi": "10.1090/s0025-5718-1980-0559197-0",
+  "title": "An incomplete factorization technique for positive definite linear systems",
+  "journal": "Mathematics of Computation",
+  "volume": "34",
+  "page": "473",
+  "year": 1980,
+  "authors": [
+   [
+    "T. A.",
+    "Manteuffel"
+   ]
+  ]
+ },
+ "kite": {
+  "status": "OK",
+  "doi": "10.1098/rsos.191809",
+  "title": "KITE: high-performance accurate modelling of electronic structure and response functions of large molecules, disordered crystals and heterostructures",
+  "journal": "Royal Society Open Science",
+  "volume": "7",
+  "page": "191809",
+  "year": 2020,
+  "authors": [
+   [
+    "Sim\u00e3o M.",
+    "Jo\u00e3o"
+   ],
+   [
+    "Mi\u0161a",
+    "An\u0111elkovi\u0107"
+   ],
+   [
+    "Lucian",
+    "Covaci"
+   ],
+   [
+    "Tatiana G.",
+    "Rappoport"
+   ],
+   [
+    "Jo\u00e3o M. V. P.",
+    "Lopes"
+   ],
+   [
+    "Aires",
+    "Ferreira"
+   ]
+  ]
+ },
+ "kwant": {
+  "status": "OK",
+  "doi": "10.1088/1367-2630/16/6/063065",
+  "title": "Kwant: a software package for quantum transport",
+  "journal": "New Journal of Physics",
+  "volume": "16",
+  "page": "063065",
+  "year": 2014,
+  "authors": [
+   [
+    "Christoph W",
+    "Groth"
+   ],
+   [
+    "Michael",
+    "Wimmer"
+   ],
+   [
+    "Anton R",
+    "Akhmerov"
+   ],
+   [
+    "Xavier",
+    "Waintal"
+   ]
+  ]
+ },
+ "tbplas": {
+  "status": "OK",
+  "doi": "10.1016/j.cpc.2022.108632",
+  "title": "TBPLaS: A tight-binding package for large-scale simulation",
+  "journal": "Computer Physics Communications",
+  "volume": "285",
+  "page": "108632",
+  "year": 2023,
+  "authors": [
+   [
+    "Yunhai",
+    "Li"
+   ],
+   [
+    "Zhen",
+    "Zhan"
+   ],
+   [
+    "Xueheng",
+    "Kuang"
+   ],
+   [
+    "Yonggang",
+    "Li"
+   ],
+   [
+    "Shengjun",
+    "Yuan"
+   ]
+  ]
+ },
+ "scipy": {
+  "status": "MISMATCH(0/4)",
+  "doi": "10.14293/s2199-1006.1.sor-life.a7056644.v1.rysreg",
+  "title": "Review of \"SciPy 1.0: fundamental algorithms for scientific computing in Python\"",
+  "journal": "",
+  "volume": "",
+  "page": "",
+  "year": 2021,
+  "authors": [
+   [
+    "Ajit",
+    "Singh"
+   ]
+  ]
+ },
+ "numpy": {
+  "status": "OK",
+  "doi": "10.1038/s41586-020-2649-2",
+  "title": "Array programming with NumPy",
+  "journal": "Nature",
+  "volume": "585",
+  "page": "357",
+  "year": 2020,
+  "authors": [
+   [
+    "Charles R.",
+    "Harris"
+   ],
+   [
+    "K. Jarrod",
+    "Millman"
+   ],
+   [
+    "St\u00e9fan J.",
+    "van der Walt"
+   ],
+   [
+    "Ralf",
+    "Gommers"
+   ],
+   [
+    "Pauli",
+    "Virtanen"
+   ],
+   [
+    "David",
+    "Cournapeau"
+   ],
+   [
+    "Eric",
+    "Wieser"
+   ],
+   [
+    "Julian",
+    "Taylor"
+   ],
+   [
+    "Sebastian",
+    "Berg"
+   ],
+   [
+    "Nathaniel J.",
+    "Smith"
+   ],
+   [
+    "Robert",
+    "Kern"
+   ],
+   [
+    "Matti",
+    "Picus"
+   ],
+   [
+    "Stephan",
+    "Hoyer"
+   ],
+   [
+    "Marten H.",
+    "van Kerkwijk"
+   ],
+   [
+    "Matthew",
+    "Brett"
+   ],
+   [
+    "Allan",
+    "Haldane"
+   ],
+   [
+    "Jaime Fern\u00e1ndez",
+    "del R\u00edo"
+   ],
+   [
+    "Mark",
+    "Wiebe"
+   ],
+   [
+    "Pearu",
+    "Peterson"
+   ],
+   [
+    "Pierre",
+    "G\u00e9rard-Marchant"
+   ],
+   [
+    "Kevin",
+    "Sheppard"
+   ],
+   [
+    "Tyler",
+    "Reddy"
+   ],
+   [
+    "Warren",
+    "Weckesser"
+   ],
+   [
+    "Hameer",
+    "Abbasi"
+   ],
+   [
+    "Christoph",
+    "Gohlke"
+   ],
+   [
+    "Travis E.",
+    "Oliphant"
+   ]
+  ]
+ },
+ "mulliken": {
+  "status": "OK",
+  "doi": "10.1063/1.1740588",
+  "title": "Electronic Population Analysis on LCAO\u2013MO Molecular Wave Functions. I",
+  "journal": "The Journal of Chemical Physics",
+  "volume": "23",
+  "page": "1833",
+  "year": 1955,
+  "authors": [
+   [
+    "R. S.",
+    "Mulliken"
+   ]
+  ]
+ },
+ "haydock": {
+  "status": "OK",
+  "doi": "10.1088/0022-3719/5/20/004",
+  "title": "Electronic structure based on the local atomic environment for tight-binding bands",
+  "journal": "Journal of Physics C: Solid State Physics",
+  "volume": "5",
+  "page": "2845",
+  "year": 1972,
+  "authors": [
+   [
+    "R",
+    "Haydock"
+   ],
+   [
+    "V",
+    "Heine"
+   ],
+   [
+    "M J",
+    "Kelly"
+   ]
+  ]
+ },
+ "tang": {
+  "status": "MISMATCH(3/4)",
+  "doi": "10.1002/nla.779",
+  "title": "A probing method for computing the diagonal of a matrix inverse",
+  "journal": "Numerical Linear Algebra with Applications",
+  "volume": "19",
+  "page": "485",
+  "year": 2011,
+  "authors": [
+   [
+    "Jok M.",
+    "Tang"
+   ],
+   [
+    "Yousef",
+    "Saad"
+   ]
+  ]
+ },
+ "goedeckercolombo": {
+  "status": "OK",
+  "doi": "10.1103/physrevlett.73.122",
+  "title": "Efficient Linear Scaling Algorithm for Tight-Binding Molecular Dynamics",
+  "journal": "Physical Review Letters",
+  "volume": "73",
+  "page": "122",
+  "year": 1994,
+  "authors": [
+   [
+    "S.",
+    "Goedecker"
+   ],
+   [
+    "L.",
+    "Colombo"
+   ]
+  ]
+ },
+ "jackson": {
+  "status": "OK",
+  "doi": "10.1090/s0002-9947-1912-1500930-2",
+  "title": "On approximation by trigonometric sums and polynomials",
+  "journal": "Transactions of the American Mathematical Society",
+  "volume": "13",
+  "page": "491",
+  "year": 1912,
+  "authors": [
+   [
+    "Dunham",
+    "Jackson"
+   ]
+  ]
+ },
+ "turek": {
+  "status": "OK",
+  "doi": "10.1088/0022-3719/21/17/014",
+  "title": "A maximum-entropy approach to the density of states within the recursion method",
+  "journal": "Journal of Physics C: Solid State Physics",
+  "volume": "21",
+  "page": "3251",
+  "year": 1988,
+  "authors": [
+   [
+    "I",
+    "Turek"
+   ]
+  ]
+ }
+}

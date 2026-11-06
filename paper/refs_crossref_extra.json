@@ -1,0 +1,112 @@
+{
+ "mp1997": {
+  "status": "OK",
+  "doi": "10.1063/1.473271",
+  "title": "A simple nonequilibrium molecular dynamics method for calculating the thermal conductivity",
+  "journal": "The Journal of Chemical Physics",
+  "volume": "106",
+  "page": "6082",
+  "year": 1997,
+  "authors": [
+   [
+    "Florian",
+    "M\u00fcller-Plathe"
+   ]
+  ]
+ },
+ "af1993": {
+  "status": "OK",
+  "doi": "10.1103/physrevb.48.12581",
+  "title": "Thermal conductivity of disordered harmonic solids",
+  "journal": "Physical Review B",
+  "volume": "48",
+  "page": "12581",
+  "year": 1993,
+  "authors": [
+   [
+    "Philip B.",
+    "Allen"
+   ],
+   [
+    "Joseph L.",
+    "Feldman"
+   ]
+  ]
+ },
+ "af1999": {
+  "status": "OK",
+  "doi": "10.1080/13642819908223054",
+  "title": "Diffusons, locons and propagons: Character of atomic vibrations in amorphous Si",
+  "journal": "Philosophical Magazine B",
+  "volume": "79",
+  "page": "1715",
+  "year": 1999,
+  "authors": [
+   [
+    "Philip B.",
+    "Allen"
+   ],
+   [
+    "Joseph L.",
+    "Feldman"
+   ],
+   [
+    "Jaroslav",
+    "Fabian"
+   ],
+   [
+    "Frederick",
+    "Wooten"
+   ]
+  ]
+ },
+ "greenwood": {
+  "status": "OK",
+  "doi": "10.1088/0370-1328/71/4/306",
+  "title": "The Boltzmann Equation in the Theory of Electrical Conduction in Metals",
+  "journal": "Proceedings of the Physical Society",
+  "volume": "71",
+  "page": "585",
+  "year": 1958,
+  "authors": [
+   [
+    "D A",
+    "Greenwood"
+   ]
+  ]
+ },
+ "mahansofo": {
+  "status": "OK",
+  "doi": "10.1073/pnas.93.15.7436",
+  "title": "The best thermoelectric.",
+  "journal": "Proceedings of the National Academy of Sciences",
+  "volume": "93",
+  "page": "7436",
+  "year": 1996,
+  "authors": [
+   [
+    "G D",
+    "Mahan"
+   ],
+   [
+    "J O",
+    "Sofo"
+   ]
+  ]
+ },
+ "abeles": {
+  "status": "OK",
+  "doi": "10.1103/physrev.131.1906",
+  "title": "Lattice Thermal Conductivity of Disordered Semiconductor Alloys at High Temperatures",
+  "journal": "Physical Review",
+  "volume": "131",
+  "page": "1906",
+  "year": 1963,
+  "authors": [
+   [
+    "B.",
+    "Abeles"
+   ]
+  ]
+ }
+}

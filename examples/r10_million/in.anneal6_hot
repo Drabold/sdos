@@ -1,0 +1,20 @@
+units metal
+boundary p p p
+atom_style atomic
+atom_modify map array sort 0 0.0
+read_data r10_rep6.data
+include /home/drabold/lammps-runs/rosset_external/pot_kk.in
+neighbor 1.0 bin
+neigh_modify every 5 delay 0 check yes
+timestep 0.001
+velocity all create 1000.0 20261106 mom yes rot no dist gaussian
+fix nvt all nvt temp 1000.0 1000.0 0.1
+thermo 100
+thermo_style custom step temp pe press
+run 2000
+unfix nvt
+write_data r10_rep6_hot_annealed.data nocoeff
+thermo_style custom step pe fnorm fmax
+min_style cg
+minimize 0.0 1e-5 20000 100000
+write_data r10_rep6_hot_quenched.data nocoeff

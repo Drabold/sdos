@@ -1,0 +1,20 @@
+{
+ "graphene_EF": 3.7377978567150025,
+ "30": {
+  "atoms": 54000,
+  "orbitals": 216000,
+  "geometry": "relaxed LCBOP",
+  "nnz_per_row": 36.9,
+  "seconds_geometry": 0.0,
+  "seconds_build": 0.3,
+  "seconds_dos": 80.9,
+  "seconds_gap": 0.0,
+  "gap": null,
+  "homo": null,
+  "lumo": null,
+  "EF_exact": false,
+  "resolution": 0.16383533245435966,
+  "E_F": 3.7377978567150025,
+  "peak_rss_gb": 0.6
+ }
+}

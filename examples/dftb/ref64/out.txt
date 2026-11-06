@@ -1,0 +1,72 @@
+|===============================================================================
+|
+|  DFTB+ development version (commit: a23bfb2)
+|
+|  Copyright (C) 2006 - 2025  DFTB+ developers group
+|
+|===============================================================================
+|
+|  When publishing results obtained with DFTB+, please cite the following
+|  reference:
+|
+|    Recent Developments in DFTB+, a Software Package for Efficient Atomistic
+|    Quantum Mechanical Simulations, J. Phys. Chem. A 129, 5373−5390 (2025).
+|    [https://doi.org/10.1021/acs.jpca.5c01146]
+|
+|  You should also cite additional publications crediting the parametrization
+|  data you use. Please consult the documentation of the SK-files for the
+|  references.
+|
+|===============================================================================
+
+Reading input file 'dftb_in.hsd'
+Parser version: 14
+
+--------------------------------------------------------------------------------
+***  Converting input from parser version 12 to parser version 14 ...
+***  Done.
+
+Reading SK-files:
+/home/drabold/opt/slako/pbc-0-3/Si-Si.skf
+Done.
+
+
+Processed input in HSD format written to 'dftb_pin.hsd'
+
+Starting initialization...
+--------------------------------------------------------------------------------
+WARNING!
+-> Dipole printed for extended system : value printed is not well defined
+OpenMP threads:              2
+Chosen random seed:          101510821
+Current stacksize:           unlimited
+Mode:                        Static calculation
+Self consistent charges:     No
+Spin polarisation:           No
+Nr. of up electrons:           128.000000
+Nr. of down electrons:         128.000000
+Periodic boundaries:         Yes
+Electronic solver:           Relatively robust
+Electronic temperature:              0.100000E-07 H      0.272114E-06 eV
+Included shells:            Si:  s, p
+K-points and weights:           1:  0.000000  0.000000  0.000000     1.000000
+
+K-points in absolute space:     1:  0.000000  0.000000  0.000000
+
+Extra options:
+                             Mulliken analysis
+
+--------------------------------------------------------------------------------
+
+***  Geometry step: 0
+
+Hamilton/Overlap written, exiting program.
+
+--------------------------------------------------------------------------------
+DFTB+ running times                          cpu [s]             wall clock [s]
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Missing                                +       0.06 (100.0%)       0.03 (100.0%)
+Total                                  =       0.06 (100.0%)       0.03 (100.0%)
+--------------------------------------------------------------------------------
+ERROR STOP 

@@ -1,0 +1,12 @@
+units metal
+boundary p p p
+atom_style atomic
+atom_modify map array sort 0 0.0
+read_data r10_input.data
+include /home/drabold/lammps-runs/rosset_external/pot_kk.in
+neighbor 1.0 bin
+thermo 100
+thermo_style custom step pe press vol fnorm fmax
+min_style cg
+minimize 0.0 1e-10 50000 500000
+write_data r10_relaxed.data nocoeff

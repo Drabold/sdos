@@ -1,0 +1,181 @@
+{
+ "snyder": {
+  "status": "OK",
+  "doi": "10.1038/nmat2090",
+  "title": "Complex thermoelectric materials",
+  "journal": "Nature Materials",
+  "volume": "7",
+  "page": "105",
+  "year": 2008,
+  "authors": [
+   [
+    "G. Jeffrey",
+    "Snyder"
+   ],
+   [
+    "Eric S.",
+    "Toberer"
+   ]
+  ]
+ },
+ "hicks": {
+  "status": "OK",
+  "doi": "10.1103/physrevb.47.12727",
+  "title": "Effect of quantum-well structures on the thermoelectric figure of merit",
+  "journal": "Physical Review B",
+  "volume": "47",
+  "page": "12727",
+  "year": 1993,
+  "authors": [
+   [
+    "L. D.",
+    "Hicks"
+   ],
+   [
+    "M. S.",
+    "Dresselhaus"
+   ]
+  ]
+ },
+ "cuttlermott": {
+  "status": "OK",
+  "doi": "10.1103/physrev.181.1336",
+  "title": "Observation of Anderson Localization in an Electron Gas",
+  "journal": "Physical Review",
+  "volume": "181",
+  "page": "1336",
+  "year": 1969,
+  "authors": [
+   [
+    "Melvin",
+    "Cutler"
+   ],
+   [
+    "N. F.",
+    "Mott"
+   ]
+  ]
+ },
+ "bergman": {
+  "status": "OK",
+  "doi": "10.1063/1.349830",
+  "title": "Thermoelectric properties of a composite medium",
+  "journal": "Journal of Applied Physics",
+  "volume": "70",
+  "page": "6821",
+  "year": 1991,
+  "authors": [
+   [
+    "David J.",
+    "Bergman"
+   ],
+   [
+    "Ohad",
+    "Levy"
+   ]
+  ]
+ },
+ "phono3py": {
+  "status": "OK",
+  "doi": "10.1103/physrevb.91.094306",
+  "title": "Distributions of phonon lifetimes in Brillouin zones",
+  "journal": "Physical Review B",
+  "volume": "91",
+  "page": "094306",
+  "year": 2015,
+  "authors": [
+   [
+    "Atsushi",
+    "Togo"
+   ],
+   [
+    "Laurent",
+    "Chaput"
+   ],
+   [
+    "Isao",
+    "Tanaka"
+   ]
+  ]
+ },
+ "togo2023": {
+  "status": "OK",
+  "doi": "10.1088/1361-648x/acd831",
+  "title": "Implementation strategies in phonopy and phono3py",
+  "journal": "Journal of Physics: Condensed Matter",
+  "volume": "35",
+  "page": "353001",
+  "year": 2023,
+  "authors": [
+   [
+    "Atsushi",
+    "Togo"
+   ],
+   [
+    "Laurent",
+    "Chaput"
+   ],
+   [
+    "Terumasa",
+    "Tadano"
+   ],
+   [
+    "Isao",
+    "Tanaka"
+   ]
+  ]
+ },
+ "gfn1": {
+  "status": "OK",
+  "doi": "10.1021/acs.jctc.7b00118",
+  "title": "A Robust and Accurate Tight-Binding Quantum Chemical\nMethod for Structures, Vibrational Frequencies, and Noncovalent Interactions\nof Large Molecular Systems Parametrized for All spd-Block Elements (\n                    <i>Z</i>\n                    = 1\u201386)",
+  "journal": "Journal of Chemical Theory and Computation",
+  "volume": "13",
+  "page": "1989",
+  "year": 2017,
+  "authors": [
+   [
+    "Stefan",
+    "Grimme"
+   ],
+   [
+    "Christoph",
+    "Bannwarth"
+   ],
+   [
+    "Philip",
+    "Shushkov"
+   ]
+  ]
+ },
+ "lowdin": {
+  "status": "OK",
+  "doi": "10.1063/1.1747632",
+  "title": "On the Non-Orthogonality Problem Connected with the Use of Atomic Wave Functions in the Theory of Molecules and Crystals",
+  "journal": "The Journal of Chemical Physics",
+  "volume": "18",
+  "page": "365",
+  "year": 1950,
+  "authors": [
+   [
+    "Per-Olov",
+    "L\u00f6wdin"
+   ]
+  ]
+ },
+ "casimir": {
+  "status": "OK",
+  "doi": "10.1016/s0031-8914(38)80162-2",
+  "title": "Note on the conduction of heat in crystals",
+  "journal": "Physica",
+  "volume": "5",
+  "page": "495",
+  "year": 1938,
+  "authors": [
+   [
+    "H.B.G.",
+    "Casimir"
+   ]
+  ]
+ }
+}

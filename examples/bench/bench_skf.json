@@ -1,0 +1,116 @@
+[
+ {
+  "n": 1,
+  "atoms": 4096,
+  "orbitals": 16384,
+  "nnz_per_row": 179.267578125,
+  "t_build": 1.1996641159057617,
+  "peak_rss_after_build_gb": 0.348716,
+  "pcg_bj": {
+   "sec": 14.811775207519531,
+   "peak_rss_gb": 0.348716,
+   "binv": {
+    "nsolve": 238.0,
+    "iterations": 5629.0
+   }
+  },
+  "chebyshev": {
+   "sec": 17.743149995803833,
+   "peak_rss_gb": 0.348716,
+   "binv": {
+    "kappa": 3.848395151061458,
+    "degree": 26.0,
+    "nsolve": 238.0,
+    "iterations": 6188.0
+   }
+  },
+  "pcg_ic": {
+   "sec": 34.524319648742676,
+   "peak_rss_gb": 0.348716,
+   "binv": {
+    "nsolve": 238.0,
+    "iterations": 2618.0
+   }
+  }
+ },
+ {
+  "n": 2,
+  "atoms": 32768,
+  "orbitals": 131072,
+  "nnz_per_row": 179.267578125,
+  "t_build": 4.048543214797974,
+  "peak_rss_after_build_gb": 1.360168,
+  "pcg_bj": {
+   "sec": 116.9083571434021,
+   "peak_rss_gb": 1.360168,
+   "binv": {
+    "nsolve": 238.0,
+    "iterations": 5688.0
+   }
+  },
+  "chebyshev": {
+   "sec": 141.93127632141113,
+   "peak_rss_gb": 1.810716,
+   "binv": {
+    "kappa": 3.8483951510749126,
+    "degree": 26.0,
+    "nsolve": 238.0,
+    "iterations": 6188.0
+   }
+  },
+  "pcg_ic": {
+   "sec": 287.8920228481293,
+   "peak_rss_gb": 1.810716,
+   "binv": {
+    "nsolve": 238.0,
+    "iterations": 2618.0
+   }
+  }
+ },
+ {
+  "n": 3,
+  "atoms": 110592,
+  "orbitals": 442368,
+  "nnz_per_row": 179.267578125,
+  "t_build": 14.559210538864136,
+  "peak_rss_after_build_gb": 4.11382,
+  "pcg_bj": {
+   "sec": 380.31249165534973,
+   "peak_rss_gb": 4.258364,
+   "binv": {
+    "nsolve": 238.0,
+    "iterations": 5700.0
+   }
+  },
+  "chebyshev": {
+   "sec": 397.6431038379669,
+   "peak_rss_gb": 5.76064,
+   "binv": {
+    "kappa": 3.848395151094116,
+    "degree": 26.0,
+    "nsolve": 238.0,
+    "iterations": 6188.0
+   }
+  }
+ },
+ {
+  "n": 4,
+  "atoms": 262144,
+  "orbitals": 1048576,
+  "nnz_per_row": 179.267578125,
+  "t_build": null,
+  "peak_rss_after_build_gb": null,
+  "pcg_bj": {
+   "sec": 806.0866131782532,
+   "peak_rss_gb": 9.783652,
+   "binv": {
+    "nsolve": 238.0,
+    "iterations": 5695.0
+   }
+  },
+  "chebyshev": {
+   "error": "killed: exceeded the 10 GB memory cap (the job was killed, no result)"
+  },
+  "note": "recovered from the log (the results file is written after all modes of a size finish; the Chebyshev run at this size was killed by the memory cap)"
+ }
+]

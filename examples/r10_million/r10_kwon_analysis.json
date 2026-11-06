@@ -1,0 +1,27 @@
+{
+ "kpm600": {
+  "max_abs_Ncount": 3184.675238518637,
+  "tail_valence": 2134.4166671004523,
+  "tail_conduction": 3184.675238518637
+ },
+ "maxent100": {
+  "max_abs_Ncount": 4188.866748200558,
+  "tail_valence": 3424.5349399194583,
+  "tail_conduction": 4188.866748200558
+ },
+ "maxent300": {
+  "max_abs_Ncount": 2165.4180562044025,
+  "tail_valence": 2113.7171764426066,
+  "tail_conduction": 2165.4180562044025
+ },
+ "maxent600": {
+  "max_abs_Ncount": 1799.0970034885042,
+  "tail_valence": 1756.8518383715677,
+  "tail_conduction": 1789.2884906477163
+ },
+ "kpm300": {
+  "max_abs_Ncount": 5775.468851893848,
+  "tail_valence": 3124.73345997334,
+  "tail_conduction": 5775.468851893848
+ }
+}

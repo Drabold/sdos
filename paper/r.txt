@@ -1,0 +1,1468 @@
+sdos: stochastic spectral densities of very large sparse Hermitian and generalized
+eigenproblems
+by kernel polynomial and maximum-entropy methods, with spectral windows,
+projections, vibrations and their validation to 106 atoms
+David A. Drabold1
+1
+
+Department of Physics and Astronomy, Ohio University, Athens, Ohio 45701, USA
+(Dated: November 1, 2026)
+
+We describe sdos, an open Python package that computes the density of states (DOS) and related
+spectral quantities of very large sparse Hermitian matrices A, and of generalized problems Ax = λBx
+with B Hermitian positive definite, from Chebyshev moments estimated with random vectors. The
+spectral density is reconstructed either by the kernel polynomial method (KPM, the default) or
+by maximum entropy (Maxent, with a bootstrapped solver); band energies, Fermi levels, local and
+projected densities of states, harmonic thermodynamics and exact HOMO–LUMO gaps come with
+the same interface, and eigenpairs inside a spectral window (with inverse participation ratios) are
+available by shift-invert or Chebyshev filtering. The package treats real and complex Hermitian
+operators, explicit sparse matrices and matrix-free operators, and electronic (orthogonal and nonorthogonal) and vibrational problems. We validate every ingredient against dense diagonalization or
+against independent codes: Kwon and Xu tight-binding models, DFTB Hamiltonians and overlaps
+against DFTB+ (matrix elements agree to 8 × 10−7 eV), SIESTA matrices, finite-difference Hessians
+from LAMMPS against its dynamical_matrix for the Stillinger–Weber and ACE potentials. On a
+workstation (WSL2, 19 GB) a density of states of a 884 736-atom Kwon silicon model (3.5 million
+orbitals) takes about 70 s, a non-orthogonal DFTB problem with 442 368 orbitals about 380 s, and a
+matrix-free 2 097 152-atom crystalline Si spectrum (8.4 million orbitals, 170 moments) about 32 min
+in 1.8 GB; the cost is linear in the number of orbitals (measured exponent 1.01). We report where
+the methods do not scale (shift-invert, incomplete Cholesky setup, exact moments of high order,
+Maxent with many exact moments), what is new relative to earlier work (non-orthogonal KPM
+by preconditioned conjugate gradients was introduced by Röder, Silver and Kress), and practical
+recommendations: KPM by default, Maxent when high-order moments are expensive, and exact
+low-order moments for integrated quantities.
+I. INTRODUCTION
+
+The density of states (DOS) ρ(E) = N −1 Tr δ(E−H) of
+a large Hamiltonian H determines band energies, Fermi
+levels, thermodynamics and, through its local variants,
+much of the interpretation of electronic and vibrational
+structure in disordered and nanostructured materials.
+For matrices of dimension N ∼ 105 –107 , as arise for
+amorphous networks, nanostructures and large supercells, diagonalization (O(N 3 ) time, O(N 2 ) memory) is
+out of reach, whereas the moments µn = N −1 Tr Tn (H̃)
+of ρ with respect to Chebyshev polynomials of the scaled
+operator can be had in O(N ) operations per moment
+from matrix–vector products with a few random vectors, because the trace can be replaced by a stochastic estimator [1, 2]. Two routes lead from moments to
+a density: the kernel polynomial method (KPM) [3–5],
+a damped Chebyshev series that is linear, positive with
+the Jackson kernel [6] and easy to use, and the principle of maximum entropy [7–9], which finds the positive density with maximal entropy that reproduces the
+moments and which, for the same moments, resolves
+sharp features better. Both belong to the family of
+linear-scaling electronic-structure methods reviewed by
+Goedecker [10]; related moment methods are the recursion method [11], the plane-wave moments method [12]
+and Fermi-operator expansions [13], and modern surveys
+
+of stochastic spectral-density estimation are in Ref. [14].
+Electronic problems in a non-orthogonal basis and vibrational problems with unequal masses are generalized
+eigenproblems, Ax = λBx. Röder, Silver and Kress
+[15] showed that KPM extends to this case by applying
+B −1 A with a preconditioned conjugate-gradient (PCG)
+solve of B for every Chebyshev step, and demonstrated
+it for a titanate/platinum interface and amorphous diamond. sdos implements this idea and adds alternatives
+for applying B −1 (block-Jacobi, incomplete Cholesky, algebraic multigrid, and a fixed Chebyshev polynomial that
+makes the whole recursion an exact polynomial map), a
+Maxent reconstruction, exact low-order moments, spectral windows, projections and a set of interfaces to tightbinding and force-field codes. Open general-purpose
+tight-binding codes for large systems, such as KITE [16],
+Kwant [17] and TBPLaS [18], are built around orthogonal models: we found no mention of an overlap matrix in
+their papers (we did not audit their source code), and we
+make no claim beyond that. Our contribution is therefore
+an open, tested implementation and a quantitative validation, not a new method; we state in each section what
+is established elsewhere and what we measured here.
+The outline of the paper is as follows. Section II
+gives the methods and the design choices; Section III
+the validation against exact results; Section IV three applications that correspond to published calculations (a
+
+2
+2 097 152-atom crystal, the fullerene-to-graphene series,
+and an amorphous Si model with DFTB and ACE); Section V cost and memory scaling and an honest statement
+of limits; Section VI recommendations, and Section VII
+conclusions and availability.
+
+II.
+A.
+
+METHODS
+
+Moments from random vectors
+
+Let H be Hermitian with spectrum in [Emin , Emax ],
+and H̃ = (H − b)/a with a = 12 (Emax − Emin )(1 + ϵ),
+b = 12 (Emax + Emin ), so that the spectrum of H̃ lies in
+(−1, 1) (ϵ = 0.01 by default). The density per orbital is
+ρ(E) = a1 ρ̃(x), x = (E − b)/a, with Chebyshev moments
+1
+µn = Tr Tn (H̃) =
+N
+
+∫ 1
+−1
+
+ρ̃(x)Tn (x) dx.
+
+(1)
+
+A random vector x with E[xx† ] = 1 gives µn ≈
+1 †
+N x Tn (H̃)x (for unit-variance entries), and averaging
+over R vectors reduces the sampling error as R−1/2 ; because the diagonal of Tn (H̃) is self-averaging, the relative
+error of each moment also falls as N −1/2 , so large systems
+need fewer vectors [1, 2, 14]. sdos draws Rademacher
+(±1) vectors for real and random phases for complex
+problems (Gaussian vectors are available; they have a
+larger variance, Table I). With vn = Tn (H̃)x the recursion vn+1 = 2H̃vn − vn−1 and the doubling identities
+µ2n = 2⟨vn |vn ⟩ − µ0 ,
+µ2n+1 = 2⟨vn+1 |vn ⟩ − µ1 ,
+
+(2)
+(3)
+
+give M moments from M/2 matrix–vector products per
+vector. For complex Hermitian H all inner products are
+conjugated and everything else is unchanged; real arithmetic is used whenever the operator is real. The operator may be an explicit sparse matrix (CSR) or any
+LinearOperator; Hermiticity is checked (explicitly or
+by randomized probes for matrix-free operators), which
+matters for finite-difference Hessians that are Hermitian
+only to O(δ 2 ).
+Spectral bounds. The bounds are estimated with
+ARPACK (Lanczos), starting from a deterministic vector so that results are reproducible; Lanczos Ritz values
+lie inside the spectrum, hence the margin ϵ. For explicit
+matrices Gershgorin bounds are available as a safe fallback. The relative ARPACK tolerance is 10−3 (it was
+10−4 until we measured that the bound estimate then
+costs 482 matrix–vector products for the 131 072-orbital
+stencil, more than the 340 needed for M = 170, R = 4;
+at 10−3 it costs 222 and the bounds move by less than
+5 meV against a window of 20 eV).
+
+TABLE I. Random vectors and exact low moments, band energy of DTW4096 (Kwon, M = 100, 12 seeds with R = 2
+each). Eﬀiciency = (variance × time)−1 relative to plain
+Rademacher vectors; the uncertainty of each entry is about
+30%.
+vectors
+Rad.
+Gauss.
+impartial (3)
+Rad. + exact K=4
+Rad. + exact K=8
+Rad. + exact K=16
+
+B.
+
+std (meV/at.)
+192.8
+315.4
+25.6
+11.2
+4.4
+1.4
+
+time (s)
+0.23
+0.23
+0.35
+1.75
+8.99
+79.84
+
+eﬀiciency
+1.0×
+0.4×
+36.7×
+38.0×
+47.3×
+52.2×
+
+Exact low-order moments and impartial vectors
+
+Drabold and Sankey [9] introduced impartial vectors,
+chosen to weigh all eigenvectors equally. Their construction minimizes the penalty P (x) = (⟨x|x⟩ − 1)2 +
+(⟨x|H|x⟩ − µ1 )2 + (⟨x|H 2 |x⟩ − µ2 )2 by conjugate gradients, with the exactly known µ1 = N −1 TrH and
+µ2 = N −1 TrH 2 (both O(N ) from the matrix), so that
+the first three moments of x are exact; we reproduce their
+narrowing of the band-energy distribution. Only three
+moments are constrained: constraining more makes the
+ensemble biased, as we verified by the rms z-score of the
+moment residuals (1.8, 4.6, 4.5 for K = 4, 8, 16 constrained moments, against ≈ 1 for an unbiased ensemble). The unbiased way to exploit exact low moments
+is substitution: µn for n ≤ K can be computed exactly
+in O(N ) because [Tn (H̃)]ii depends only on a neighbourhood of radius ≈ n/2 hops of site i, so the first K moments of every sample are replaced by the exact ones
+(exact_moments=K, default K = 4 when cheap). The
+cost per site grows polynomially with K, not with N . Table I measures all options on one problem: at equal cost
+every variance-reduction option beats plain Rademacher
+vectors by a factor of order 20–50, with K = 8 best.
+
+C.
+
+Reconstruction: KPM and maximum entropy
+
+KPM. The default[ reconstruction
+is the damped
+] se∑
+1
+ries ρ̃(x) = π√1−x
+g0 µ0 + 2 n≥1 gn µn Tn (x) with
+2
+the Jackson kernel gn [5, 6] (positive, energy resolution
+≈ πa/M ); the Lorentz kernel is available for Greenfunction-like uses. KPM is linear in the moments, never
+fails to converge, and for M → ∞ at fixed noise it only
+sharpens sampling speckle: for a finite system with N
+levels, resolutions finer than the mean level spacing resolve individual levels.
+Maximum
+∑ entropy. Maxent [7–9] writes ρ̃(x) =
+w(x) exp[ n λn Tn (x)] with a default model w and finds
+
+3
+λ by Newton’s method on the convex dual
+∫
+Γ(λ) =
+
+w eλ·T dx − λ · µ + 12
+
+∑
+
+σn2 λ2n ,
+
+D.
+
+(4)
+
+n
+
+For Ax = λBx, Y = B −1 A is self-adjoint in
+the B-inner product and similar to B −1/2 AB −1/2 , so
+^
+Tr T (Ỹ ) = Tr T (B −1/2
+AB −1/2 ) and x† T (Ỹ )x is an
+m
+
+whose gradient
+is the moment residual and whose Hes∫
+sian is w eλ·T Tm Tn dx; σn are the standard errors of
+the sampled moments (zero for exact moments), and
+the solver uses an eigenvalue-floored Newton step with
+backtracking. The default model is uniform (flat); the
+Chebyshev weight, the Jackson-KPM density and a KPM
+model at fewer moments gave no measurable difference
+in accuracy or conditioning. Two practical points follow
+from our tests. First, with a spectral window much wider
+than the support (a poor bound), the multipliers become
+very large (up to 104 –105 for exact moments) although
+the density remains accurate; stochastic moments with
+their errors tolerate even a factor-two window. Second,
+Maxent with exact moments of a density with singularities (log van Hove peaks, Dirac cusps) has no solution in
+the finite exponential family, so beyond a few hundred
+moments the Newton iteration does not converge (Table II); with sampled moments the noise regularizes the
+problem.
+Bootstrapped Maxent. Following Drabold’s practice
+of climbing in the number of moments from the band
+edges found with fewer, maxent_bootstrap solves for
+M = 16, 32, 64, . . . in turn, starts each stage from the
+previous multipliers, and after each stage restricts the
+integration support of the dual to the interval where the
+density exceeds 10−4 of its maximum, padded by two resolution lengths π/M . No states are allowed outside the
+edges, so the multipliers need not build huge exponentials to suppress the density in the empty margin of the
+window. The support is a modelling statement, checked
+by the residual of the moments; a stage that fails to converge is widened and retried, and if it still fails the last
+converged stage is returned (with converged=False and
+the number of moments used). For graphene with exact
+moments, M = 400 converged in 9 s with the bootstrap
+against 28 s without (and without convergence), at the
+same error; the support barely shrinks for graphene because the band fills its window, so for that case the gain
+is due to the warm starts.
+Integrated quantities. The integrated density N (E),
+the Fermi level for a ∑
+given electron count, and the
+band energy EBS = 2 Ei <EF Ei follow from the reconstruction (fermi_and_band_energy), with jackknife
+error bars over the vectors for Maxent. In a gap the integrated density is flat, so EF is not determined by the
+moments to better than the gap: sdos reports the interval over which N (E) equals the electron count within
+noise (fermi_interval) and warns; the band energy is
+nearly independent of where EF is placed in a true gap.
+Exact HOMO and LUMO levels are obtained separately
+(Sec. II E).
+
+Generalized problems
+
+m
+
+m
+
+unbiased estimator for any x with E[xx† ] = 1 [15]. Y
+is not Hermitian in the Euclidean product, so the doubling identities do not apply: one application of B −1
+per moment is needed, and the cost per moment is that
+of a solve. Spectral bounds of Y use a Lanczos process
+in the B-inner product. sdos offers the following ways
+of applying B −1 , all verified to give the same moments
+to tolerance (Table III): (i) PCG to a relative residual
+10−12 with block-Jacobi (default), incomplete Cholesky
+IC(0) with a Manteuffel shift [19, 20] (we implemented
+it ourselves: the shift needed is reported, since the overlap of a minimal basis is not an M -matrix), or algebraic
+multigrid; (ii) a fixed polynomial p(B̃) ≈ B̃ −1 on the
+diagonally scaled B̃ = D−1/2
+BD−1/2 (a similarity trans1√
+form of Y ), of degree ≈ 2 κ ln(2/ε) from the condition
+number κ, which makes the recursion an exact polynomial map. For a diagonal B (masses) B is absorbed into
+A once and no solves are needed. For the DFTB overlap of silicon (κ(B̃) = 3.85) the polynomial has degree
+26 and PCG with block-Jacobi needs about 24 iterations
+per solve (Table III); the iteration count is independent
+of the system size (Sec. V).
+
+E.
+
+Spectral windows, exact gaps and projections
+
+Windows. window_eigs returns the eigenpairs with
+λ in a window
+∑together with their inverse participation
+ratio IPR = s ws2 (site weights ws from the Mulliken
+populations, Sec. II E), by shift-invert (sparse LDL† of
+A−σB, ARPACK) or by Chebyshev-filtered subspace iteration [21]. Shift-invert is not O(N ): the fill of a sparse
+factorization grows faster than linearly in three dimensions; the filtered iteration is the scalable fallback, complete only away from the window edges by ≈ 2πa/degree.
+Exact HOMO–LUMO gaps. By Sylvester’s law of inertia, the number of eigenvalues below σ equals the number of negative pivots of A − σB; count_states_below
+evaluates it from a symmetric factorization without pivoting, and homo_lumo finds HOMO and LUMO by two
+bisections, with no eigensolver and no assumption on the
+gap size or on degeneracy. Because of the fill, this is more
+expensive than the density of states above ∼ 2 × 104 orbitals (Sec. V), so the exact gap is a tool for moderate
+sizes.
+Projections. For Ax = λBx with eigenvectors normalized ψ † Bψ = 1, the weight of orbital i in state n is the
+∗
+Mulliken weight win = Re ψin
+(Bψn )i [22] (equal to |ψin |2
+for B = 1; weights can be negative for strongly over−1
+lapping orbitals).
+∑ Then LDOSi (E) =∑[δ(E − †AB )]ii
+and PDOSg = i∈g LDOSi , because n ψn ψn f (λn ) =
+f (B −1 A)B −1 and B(B −1 A)B −1 = AB −1 ; the moments
+
+4
+are those∑
+of the adjoint operator AB −1 . Sum rules hold
+exactly: i LDOSi = N ρ, each LDOS integrates to one,
+and PDOSg integrates to ng /N . Two estimators are provided: “shared” (one random vector is propagated once
+and every group reads its own partial inner product, all
+groups for the price of one DOS, at the cost of extra noise
+for small groups) and “separate” (a vector supported on
+the group), and ldos propagates unit vectors for a deterministic result.
+
+F.
+
+Vibrations
+
+For a force-constant matrix Φ and masses Mi , D =
+M −1/2 ΦM −1/2 has eigenvalues ω 2 . vdos works with
+λ = ω 2 and reports g(ω) = 2ωρ(ω 2 ); negative eigenvalues (instabilities) are reported, not clipped, with the
+weight below the resolution. The three rigid translations
+are known eigenvalues at λ = 0 and can be removed exactly from the moments (zero_modes=3), which matters
+for the entropy and the low-temperature heat capacity
+because the kernel would smear their weight into small
+positive ω. harmonic_thermo gives the zero-point energy, U , F , S and Cv per atom and warns below the
+temperature where the lowest frequencies are unresolved.
+Matrix-free
+Hessians. For
+large
+models
+HessianOperator applies Φu = −[F (x0 + su) −
+F (x0 − su)]/2s with any force provider (LAMMPS
+through its Python module, or any callable), two force
+calls per product, the step s chosen so that the rms
+displacement per atom is 10−3 Å independent of the
+system size, and translations projected out. No Hessian
+is stored.
+
+G.
+
+Interfaces and implementation
+
+sdos is a pure-Python package (NumPy [23], SciPy
+[24]; Python 3.14 in the present tests); everything else
+is optional. Tight-binding models: the orthogonal Kwon
+silicon model [25] (constants checked against Table I and
+Eqs. (4) and (8) of the paper) with Bloch twists (complex Hermitian matrices), a chunked assembler for 106
+atoms and a matrix-free periodic stencil for crystals; and
+the Xu–Wang–Chan–Ho carbon model [26] (parameters
+and the cubic tail checked against the paper). DFTB
+Slater–Koster (.skf) files, read from a user-supplied directory (the pbc-0-3 set [27] is distributed under CC
+BY-SA 4.0 and requires citation of Refs. [28, 29]; it is not
+bundled), non-self-consistent [30] (zeroth-order Hamiltonian H0 and overlap S). SIESTA H and S through
+sisl [31–33], and LAMMPS force fields [34] through the
+matrix-free Hessian. A command-line tool (sdos) covers the common cases. The test suite has 178 tests (run
+with OpenMP/BLAS capped at 4 threads), including the
+comparisons with exact diagonalization listed in Sec. III,
+a regression test against the original single-file code and
+tests that the documented examples run.
+
+The DFTB reader. Reading the DFTB format correctly required three conventions that the available documentation does not spell out, which we recovered by
+comparing whole matrices with DFTB+ [35] (Sec. III D):
+a table announced as ngrid rows contains ngrid − 1,
+row j sits at r = j ∆r (r = 0 is the omitted row) and
+the first 19 rows of the silicon file are placeholders for
+r < 0.4 Bohr; the p orbitals are ordered (py , pz , px ); and
+each integral is continued past the end of its table by a
+quintic that reaches zero, with vanishing first and second
+derivatives, one Bohr later and matches value, slope and
+curvature of the table’s last row. The non-orthogonal
+pair convention follows from the file name: in A-B.skf
+the first orbital of each integral sits on A, so a (p on A,
+s on B) block uses the B–A file.
+
+III.
+
+VALIDATION
+
+All tests compare with exact diagonalization or with
+an independent code; the benchmarks use DTW4096,
+a 4096-atom model of amorphous silicon from the
+Djordjevic–Thorpe–Wooten family [36] (relaxed with
+ACE, cell 43.6 × 43.7 × 43.9 Å3 ), at Γ unless stated,
+since the cells are large and the k-point dependence of
+an amorphous Si cell this size is weak.
+
+A.
+
+Unit tests
+
+The directive for the package fixed the following tests,
+all of which pass: (1) a cubic Anderson model; (2) the
+same with Peierls phases (complex Hermitian); (3) a 216atom Kwon silicon model; (4) a random sparse A with
+a sparse positive definite B whose condition number is
+tuned from ≈ 10 to ≈ 104 , real and complex; (5) a Keating dynamical matrix with unequal masses in both forms
+(mass-weighted, and generalized with M ); (6) both B −1
+modes give the same moments; (7) regression against the
+original code. Beyond these: Maxent robustness (large
+windows, default models), the Mulliken sum rules, local exact moments against the dense matrix, the inertia
+counts, and the interfaces (Secs. III C–III E).
+
+B.
+
+Accuracy against the number of moments and
+vectors
+
+To separate truncation from sampling we compute the
+moments exactly from the dense spectrum of DTW4096
+(Kwon, 16 384 orbitals) and reconstruct (Table II,
+Fig. 1a,b). KPM with the Jackson kernel converges
+steadily (L1 error 3.7 × 10−3 at M = 400); Maxent is
+more accurate for the same moments up to M ≈ 100:
+at M = 70 its band-energy error is 0.12 meV/atom
+against 1.0 and its L1 distance is six times smaller, at
+M = 40 1.6 against −18 meV/atom. Beyond M ≈ 100
+
+5
+TABLE II. Truncation error on DTW4096 (Kwon, Γ) with
+exact moments (no sampling noise): band-energy error and
+L1 distance to the exact spectrum broadened by 0.05 eV. † :
+the plain Maxent solver did not reach tolerance 10−9 in 300
+Newton steps.
+M
+20
+40
+70
+100
+170
+300
+400
+
+∆EBS (meV/atom)
+KPM
+Maxent
+−198.23
++22.52
+−18.24
++1.56
+−0.99
++0.12
++0.26
++0.02†
++0.30
+−0.45†
++0.14
+–
++0.09
+–
+
+pointwise L1
+KPM
+Maxent
+3.3493
+0.1122
+0.2862
+0.0383
+0.0715
+0.0116
+0.0332
+0.0083†
+0.0119
+0.0274†
+0.0053
+–
+0.0037
+–
+
+the plain Maxent solver no longer converges with exact moments of this singular density (open symbols)
+and its error stops improving, whereas KPM continues;
+with sampled moments the noise regularizes the problem (the bootstrap helps, Sec. II C). The sampling error of the band energy falls as R−1/2 (Fig. 1c) with ≈
+250 meV/atom per random vector for plain Rademacher
+vectors; the default exact-moment substitution reduces
+this to ≈ 15 meV/atom (Table I). Note that comparing a
+sharp Maxent curve with an exact spectrum broadened
+by a Gaussian penalizes Maxent for sharpness; the truncation test above avoids this by comparing integrated
+quantities and a narrow (0.05 eV) reference.
+
+C.
+
+Complex Hermitian problems
+
+A Bloch twist k makes the Hamiltonian of a periodic
+supercell complex Hermitian, Hij = h(dij )eik·dij , and its
+spectrum is the union of the primitive-cell bands at the
+k points folded onto it. For a 216-atom Kwon supercell
+and for the DFTB model we verify that the generalized
+spectrum of the twisted supercell equals this union to
+10−9 eV and that H is Hermitian to 10−12 ; the same
+builder is used in chunked form for 106 atoms and agrees
+with the unchunked one exactly. The matrix-free stencil of a 163 -cell supercell (131 072 orbitals) at a generic
+twist has a Hermiticity defect of 1.8×10−17 and its KPM
+and Maxent densities (M = 170, R = 6) agree with the
+exact k-sum with L1 distances 0.036 and 0.047 against
+the 0.1 eV-broadened reference. For DTW4096 with the
+DFTB model the density at a k point of the cell’s own
+reciprocal lattice, a genuinely complex generalized problem, looks like the Γ one (L1 to the Γ spectrum 0.021
+against 0.024 for Γ itself, Table III); a dense complex
+generalized diagonalization of 16 384 orbitals does not fit
+in this machine, so there is no exact reference at that k
+point and we say so.
+
+D.
+
+Non-orthogonal problems: DFTB and SIESTA
+
+Against DFTB+. DFTB+ [35] can write the realspace H0 and S (WriteRealHS). For a randomly displaced 64-atom silicon cell of 10.9 Å (where pairs interact through two periodic images) the matrices built
+by sdos from the same .skf files agree with DFTB+
+to 7.9 × 10−7 eV in H (largest element 10.8 eV) and
+4.3 × 10−8 in S, and the generalized eigenvalues to
+3 × 10−6 eV. A distorted Si–H cluster (which tests the
+heteronuclear sign convention and the use of the reversedpair file) agrees to 7.3 × 10−7 eV and 5.5 × 10−8 . The
+residual is the difference between our cubic spline and
+DFTB+’s polynomial interpolation; in the interior of the
+table the two agree to 10−10 .
+DTW4096. Table III gives the DFTB problem of
+DTW4096: 16 384 orbitals with 179 nonzeros per row,
+dense generalized spectrum computed exactly (Cholesky
+reduction and a dense eigensolver, 210 s, 3 matrices of
+2.1 GB), gap 0.0095 eV. The three ways of applying S −1
+give the same moments (identical band energy), the error
+is within the sampling error of the R = 6 vectors, and
+IC(0) halves the number of CG iterations (11 against 24
+per solve) but is slower in wall-clock time because of its
+setup.
+SIESTA. The SIESTA Harris/single-zeta matrices of
+the fullerenes C240 and C540 (960 and 2160 orbitals), generated with SIESTA 5.4.2 [33] and read through sisl,
+give HOMO–LUMO gaps from the inertia bisection that
+agree with the dense eigh(H, S) gaps to 2 × 10−10 and
+4 × 10−11 eV (1.2995 and 0.9220 eV). For the series C60n2
+up to C2160 the PCG needs 59 iterations per solve at every size and the cost is linear in N ; SIESTA itself ran
+out of memory at C3840 (12 GB) because of its N 2 setup,
+which is a reason to build H, S by the sparse route above.
+
+E.
+
+Vibrations
+
+The operator. For a 512-atom silicon structure with
+the ACE potential [37, 38] the matrix-free products agree
+with the exact dynamical matrix written by LAMMPS’
+dynamical_matrix command to a relative 2.4×10−5 (the
+expected O(δ 2 ) error of the finite difference) with the
+same units, using two force calls per product.
+DTW4096. For the 4096-atom cell (3 rigid translations removed exactly) the matrix-free results agree with
+the exact dense spectra of both potentials (Table IV):
+for Stillinger–Weber [39] (dense matrix built column by
+column through the same force interface) the zero-point
+energy is 0.5% and Cv (300 K) 0.3% off; for ACE, whose
+exact matrix we obtained with LAMMPS (Kokkos on the
+GPU, pair_style pace product) in a few minutes, the
+ZPE is −0.66% and Cv (300 K) +0.27% off, and the exact
+matrix has no negative eigenvalues and exactly three zero
+modes. The largest error is the heat capacity at 100 K
+(+1.4%), where the result depends on the lowest frequencies, which have the poorest resolution in λ = ω 2 . Fig. 2b
+
+6
+
+101
+100
+10−1
+200
+moments M
+
+(c) sampling, M = 100
+
+(b) pointwise (open: not converged)
+std of EBS (meV/atom)
+
+KPM (Jackson)
+Maxent
+
+102
+
+∫|ρ − ρexact| dE
+
+|ΔEBS| (meV/atom)
+
+(a) band energy, exact moments
+100
+10−1
+10−2
+
+400
+
+200
+moments M
+
+16 seeds each
+
+2 × 102
+
+∝ R −1/2
+
+102
+6 × 101
+4 × 101
+
+400
+
+100
+
+101
+random vectors R
+
+FIG. 1. Accuracy on DTW4096 (Kwon, Γ). (a) Band-energy error from exact moments, KPM (Jackson) and Maxent. (b)
+Pointwise L1 distance to the exact spectrum broadened by 0.05 eV; open squares: Maxent not converged. (c) Standard deviation
+of the band energy over 16 seeds at M = 100 against the number of random vectors R (plain Rademacher vectors, no exactmoment substitution), with the R−1/2 law.
+
+TABLE III. DFTB electronic problem of DTW4096 (16 384 orbitals, 179 nonzeros per row): KPM, M = 170, R = 6. At Γ
+the three ways of applying S −1 give identical band energies (the same moments); the error is against the dense generalized
+spectrum and is within the sampling error of the R = 6 vectors. The dense complex generalized problem does not fit in memory
+here, so the k point is compared with the Γ spectrum of the same cell.
+S −1 by
+PCG, block-Jacobi
+PCG, IC(0)
+Chebyshev polynomial
+
+time (s)
+54
+79
+64
+
+Γ (real)
+iter./solve
+∆EBS (meV/atom)
+23.6
+−70.0 ± 35
+11.0
+−70.0 ± 35
+26.0
+−70.0 ± 35
+
+shows the density: the acoustic band peaks near 5 THz
+and the optic band near 14 THz. KPM and Maxent give
+the same thermodynamics to four digits.
+
+F.
+
+Windows and gaps
+
+On DTW4096 the shift-invert window around the gap
+returns the same three levels as the dense spectrum to
+7 × 10−14 eV. The exact fullerene gaps from the inertia
+bisection are in Table V.
+
+IV.
+A.
+
+APPLICATIONS
+
+A 2 097 152-atom crystal of silicon
+
+Extended Data Fig. 9 of Deringer et al. [40] shows
+the tight-binding DOS of a cubic diamond supercell of
+“2 097 172” atoms (34.7584 nm on a side) computed with
+the Kwon model [25], 170 moments and Maxent. A cell
+of 34.7584 nm is exactly 643 cubic cells of 0.5431 nm, i.e.
+2 097 152 atoms (the paper’s number appears to be a misprint), and the matrix has 8 388 608 orbitals. Because the
+
+time (s)
+125
+155
+135
+
+k (complex Hermitian)
+iter./solve
+L1 to Γ exact
+23.6
+0.021
+11.0
+0.021
+26.0
+0.021
+
+cell is periodic and translation invariant, the Hamiltonian
+is applied as a stencil (128 shifted 4×4 blocks per vector)
+and never stored. With M = 170 and R = 4 vectors the
+KPM density takes 1902 s and the Maxent density (which
+recomputes its moments) 1877 s on 4 threads, with a peak
+of 1.8 GB (with the earlier bound tolerance; Sec. II A);
+Fig. 3. The exact reference is the 8-atom cell bands on
+the 643 mesh (exactly the Γ spectrum of the supercell), a
+histogram with exactly 8 388 608 orbitals. Both methods
+reproduce the exact spectrum: the valence peaks at −6
+and −4 eV, the conduction features at +2 to +3 eV and
+the sharp upper edge at 6.7 eV, as in the published figure;
+the band runs from −13.5 to 6.65 eV, with valence maximum 0.46 and conduction minimum near 1.2 eV on the
+8-atom-cell k mesh. The methods differ most in the gap
+(Fig. 3b): Maxent follows the exact band edges (about
+0.55 and 1.15 eV) and drops steeply, whereas KPM at
+170 moments (resolution ≈ 0.4 eV) fills the gap down to
+10−4 , a Jackson-broadened floor; for anything depending
+on the gap this is the integrated-quantity advantage of
+Maxent noted in Sec. III B. The same calculation at 323
+cells (262 144 atoms) takes 87 and 89 s.
+
+7
+TABLE IV. Harmonic thermodynamics of DTW4096 (4096 atoms, relaxed with each potential): matrix-free sdos (M = 170,
+R = 4, two force calls per product, three rigid translations removed exactly) against the exact dynamical matrix. Cv in
+kB /atom.
+potential
+SW
+SW
+SW
+ACE
+ACE
+ACE
+
+method
+exact (dense)
+sdos KPM
+sdos Maxent
+exact (GPU dynamical_matrix)
+sdos KPM
+sdos Maxent
+
+ZPE (meV/atom)
+66.935
+66.573
+66.546
+60.104
+59.709
+59.709
+
+(a) DTW4096, Kwon TB, Γ
+
+VDOS per mode
+
+DOS per orbital
+
+0.08
+0.06
+0.04
+0.02
+0.00
+
+−15
+
+−10
+
+−5
+
+E (eV)
+
+Cv (300 K)
+2.2935
+2.3002
+2.3007
+2.4127
+2.4192
+2.4193
+
+Cv (600 K)
+2.7863
+2.7890
+2.7892
+2.8294
+2.8319
+2.8319
+
+(b) DTW4096, ACE
+
+exact (0.08 eV)
+KPM
+Maxent
+
+0.10
+
+Cv (100 K)
+0.8558
+0.8637
+0.8647
+0.9369
+0.9499
+0.9499
+
+0
+
+5
+
+0.12
+0.10
+0.08
+0.06
+0.04
+0.02
+0.00
+
+exact (GPU dynmat, 0.25 THz)
+KPM, matrix-free ACE
+
+0.0
+
+2.5
+
+5.0
+
+7.5 10.0 12.5 15.0 17.5
+frequency (THz)
+
+FIG. 2. DTW4096 at Γ. (a) Electronic density of states (Kwon), KPM and Maxent (M = 170, R = 12) against the exact
+spectrum. (b) Vibrational density of states with the ACE potential: matrix-free KPM (M = 170, R = 4, two force calls per
+product) against the exact dynamical matrix of LAMMPS (grey).
+
+B.
+
+Fullerenes and graphene
+
+Drabold, Ordejón, Dong and Martin [41] followed
+the icosahedral fullerenes C60n2 from C60 to C3840
+with moment-Maxent densities of states (“of order 150
+moments”, no artificial broadening), a shifted-Lanczos
+HOMO–LUMO gap and local densities of states, and
+observed that the DOS of C2160 and C3840 approaches
+graphene; the geometries were relaxed with an order-N
+tight-binding scheme [42]. We repeat the calculation with
+the Xu–Wang–Chan–Ho Hamiltonian [26] on geometries
+relaxed with the LCBOP potential [43] (which reproduces the strain energies and radii of Ref. [42] to within a
+few percent, while REBO and AIREBO overestimate the
+strain by 35–70%), generated with a Caspar–Klug (Goldberg) construction for any (m, k). Fig. 4a shows C3840
+from M = 150 moments: Maxent follows the exact spectrum (here a 0.1 eV Gaussian-broadened histogram of
+the 15 360 exact eigenvalues, computed in 124 s), including the van Hove peaks near +9 and +12 eV above EF ,
+whereas KPM at 150 moments (resolution ≈ 0.45 eV)
+is visibly broader; this is the regime in which the 1995
+calculation was done, and the sharp graphene-like fea-
+
+tures it showed are reproduced. Our model is not theirs,
+so we compare shapes, not numbers: our exact HOMO–
+LUMO gap of C3840 is 0.284 eV against 0.10 eV in their
+Fig. 3 (and 1.537 against 1.62 eV for C60 ); we did not
+establish whether the difference is due to the Hamiltonian or the relaxation (the ideal sphere gives a degenerate HOMO/LUMO and a wrong spectrum, so it is not
+informative).
+The exact gaps (Table V) follow gap ∝ N −0.47 , which
+is the scaling of a confined massless Dirac fermion, ~vF /R
+with R ∝ N 1/2 . From the graphene bands of the
+same Hamiltonian we find a true Dirac point (gap at
+K < 10−14 eV) with ~vF = 4.20 eV Å (6.4 × 105 m/s),
+and gap · Req /~vF rises with N to 1.92 at C6000 (Fig. 4c),
+close to the value 2 of a smooth sphere without pentagons
+(whose lowest levels are ±~v/R); the twelve pentagons
+carry a fictitious gauge flux that modifies the continuum
+spectrum, which we did not work out, so we read the
+4% as agreement of the scaling and not as a test. The
+weight of the states within 0.6 eV of EF on the 12 pentagon neighbourhoods (3% of the atoms), the 30 edge
+strips and the 20 facet interiors (shift-invert on C960 ,
+C2160 , C3840 ; weights summed over each Ih multiplet)
+
+8
+
+(a) 2,097,152 atoms, 8.4M orbitals
+
+DOS per orbital
+
+0.25
+0.20
+
+(b) gap region
+
+exact k-sum (0.1 eV)
+KPM, M = 170
+Maxent, M = 170
+
+10−1
+10−2
+
+0.15
+
+10−3
+
+0.10
+0.00
+
+−15
+
+exact (0.05 eV)
+KPM
+Maxent
+
+10−4
+
+0.05
+
+−10
+
+−5
+
+E (eV)
+
+0
+
+5
+
+10−−5 1.5 −1.0 −0.5 0.0
+
+0.5
+
+E (eV)
+
+1.0
+
+1.5
+
+2.0
+
+2.5
+
+FIG. 3. Kwon tight-binding DOS of diamond silicon with 643 cubic cells (2 097 152 atoms, 8 388 608 orbitals), M = 170
+moments, R = 4 vectors, matrix-free; grey: exact k-sum. (a) Whole band. (b) Gap region on a logarithmic scale.
+
+TABLE V. Exact HOMO–LUMO gaps (inertia bisection,
+Xu Hamiltonian, LCBOP-relaxed icosahedral fullerenes) and
+the confined-Dirac-cone scaling; ~vF = 4.196 eV Å from
+the graphene bands of the same Hamiltonian, Req =
+(N A0 /4π)1/2 with A0 the graphene area per atom.
+CN
+60
+240
+540
+960
+1500
+2160
+2940
+3840
+4860
+6000
+
+gap (eV)
+1.537
+1.015
+0.713
+0.549
+0.446
+0.374
+0.323
+0.284
+0.253
+0.228
+
+Req (Å)
+3.54
+7.07
+10.61
+14.15
+17.68
+21.22
+24.76
+28.29
+31.83
+35.36
+
+gap Req /~vF
+1.295
+1.711
+1.803
+1.851
+1.879
+1.891
+1.906
+1.915
+1.919
+1.922
+
+shows that the pentagons matter much more than the
+edges: for C3840 the pentagon enhancement ranges between 0.26 and 3.4 across multiplets, the edge and interior enhancements between 0.75 and 1.3; the states stay
+extended (IPR ∼ 1/N ). The class widths (2.5 and 3 Å)
+are our choice and the edge distance uses the mean radius of a faceted cage, so the ranking of the multiplets is
+more reliable than the numbers.
+For the cost, the 600 000-orbital problem C150000 takes
+372 s and 1.35 GB for 1500 moments and two vectors
+(timing on an unrelaxed ideal-sphere geometry, valid as a
+cost but not as a spectrum), with 37 nonzeros per row and
+the exact-gap bisection capped at 25 000 orbitals because
+of fill.
+
+C.
+
+Amorphous silicon with DFTB and ACE
+
+Figure 2 and Tables III, IV summarize DTW4096 as
+a stress test of both branches: the electronic DOS from
+the Kwon Hamiltonian (exact gap 0.0149 eV at Γ) and
+the DFTB problem (generalized, real and complex, gap
+0.0095 eV), and the vibrational DOS with the ACE potential that relaxed the structure. The small gaps are
+properties of this Γ-point cell, not of the method; the
+zero-point energy is 60.1 meV/atom and Cv (300 K) =
+2.41 kB /atom. The tiling of DTW4096 into 23 cells with
+the SW potential reproduces the single-cell ZPE per atom
+to 10−4 (67.05 meV/atom in both).
+
+V.
+
+COST, MEMORY AND LIMITS
+
+Machine. All timings are from one Intel Core i514400F workstation (WSL2 Linux 6.18, 19 GB of memory visible, 16 logical CPUs of which at most 8 threads
+were used, usually 4), Python 3.14.4, NumPy 2.5.4, SciPy
+1.18.1; wall-clock times of single runs. The only GPU use
+is the LAMMPS ACE dynamical matrix of DTW4096
+(an RTX 5070). Large systems are periodic tilings of
+DTW4096, i.e. not independent structures: they measure cost, not physics.
+Orthogonal case. Table VI and Fig. 5: for the Kwon
+model on tilings up to 63 copies (884 736 atoms, 3 538 944
+orbitals, 64 nonzeros per row) the whole DOS call (M =
+100, R = 2) scales linearly with the number of orbitals
+(fitted exponent 1.013; moments 1.05, bounds 1.01, matrix build 0.97) and takes 71 s at the largest size: 17 s
+build, 29 s bounds, 24 s moments (100 matrix–vector
+products, 0.24 s each). Peak memory is 9.7 GB at the
+largest size: the CSR matrix itself is 2.7 GB, the rest
+is transient copies (the scaled operator and the chunk
+stack), and the exponent 0.79 reflects fixed overheads at
+
+9
+
+(a) C
+
+3840
+
+, M = 150
+
+0.08
+
+0.10
+
+0.04
+
+0.05
+
+0.02
+
+−20
+
+−10
+0
+E − EF (eV)
+
+10
+
+0.00
+
+(c) Dirac scaling
+smooth sphere: 2
+
+2.0
+
+0.06
+
+0.15
+
+0.00
+
+2.2
+
+gap R/ħvF
+
+DOS per orbital
+
+0.20
+
+(b) near EF
+
+1.8
+1.6
+1.4
+
+−2
+
+0
+
+E
+
+− EF (eV)
+
+2
+
+1.2
+
+102
+
+103
+atoms N
+
+FIG. 4. Fullerene C3840 with the Xu Hamiltonian on an LCBOP-relaxed geometry. (a,b) DOS from M = 150 moments (blue:
+KPM; red: Maxent) against the exact eigenvalues (grey, 0.1 eV Gaussian), full band and near EF . (c) gap Req /~vF against the
+number of atoms; dashed: the smooth-sphere value 2.
+
+TABLE VI. Orthogonal case: Kwon tight binding on periodic
+tilings of DTW4096, KPM with M = 100 moments and R = 2
+vectors (no exact-moment substitution), 4 threads. Timings
+are one run each.
+atoms
+
+orbitals build bounds moments total peak mem.
+(s)
+(s)
+(s) (s)
+(GB)
+4 096
+16 384 0.1
+0.1
+0.1 0.3
+0.2
+32 768 131 072 0.6
+1.0
+0.9 2.5
+0.4
+110 592 442 368 2.1
+3.6
+2.8 8.5
+1.2
+262 144 1 048 576 4.9
+8.9
+7.1 21.0
+3.1
+512 000 2 048 000 9.7
+17.4
+14.4 41.5
+5.5
+884 736 3 538 944 17.3
+29.4
+24.1 70.8
+9.7
+
+small sizes; a leaner assembly would lower it. The matrixfree stencil avoids storing the matrix at all (8.4 million
+orbitals in 1.8 GB, Sec. IV A) but needs a translationinvariant structure.
+Non-orthogonal case. Table VII: DFTB has 179
+nonzeros per row (cutoff 6.0 Å, 4 orbitals per atom) and
+a Hamiltonian and an overlap matrix, so memory per orbital is about 5× that of the orthogonal case. The time of
+the whole DOS call grows with the exponent 0.99 (PCG,
+block-Jacobi) or 0.95 (Chebyshev polynomial) and the
+CG iteration count per solve is independent of size (23.6
+at 16 384 orbitals, 23.9 at 442 368), as it should be for
+a fixed local preconditioner of a well-conditioned overlap. IC(0) reduces the iterations to 11 per solve but our
+incomplete Cholesky is a Python loop per column and
+takes longer overall (and is therefore run only for the
+small sizes); a compiled factorization would change that
+conclusion. A million-atom non-orthogonal DFTB problem does not fit in 19 GB as explicit H and S; the largest
+size reached here is quoted in Table VII.
+
+Vibrations. A matrix-free product costs two force
+evaluations. With Stillinger–Weber on one CPU thread a
+12 288-degree-of-freedom model takes 5 ms per force call
+(11 s for M = 100, R = 2 and the bounds) and 98 304
+degrees of freedom 37 ms per call (191 s, 5124 calls including the bounds), i.e. linear in the force cost. With
+ACE the force call dominates: on CPU it takes 0.73 s
+for 4096 atoms (4 threads) and the matrix-free DOS of
+DTW4096 took 1306 s for 1768 force calls; the large-N
+ACE runs would use the GPU through a library build of
+LAMMPS, which we did not do for this report.
+
+What does not scale. (i) Shift-invert and the exact
+HOMO–LUMO bisection are not O(N ) because of fill;
+for the Xu fullerenes the bisection takes 27 s at 15 360
+orbitals and 62–80 s at 24 000–19 440, and the exact-gap
+bisection costs more than the DOS above ∼ 2 × 104 orbitals. (ii) Exact moments of order K cost a time that
+grows quickly with K (1.8, 9 and 80 s per run at K = 4,
+8, 16 for 16 384 orbitals), although it is linear in N for
+fixed K. (iii) The spectral bounds are independent of N
+but not negligible (222 matrix–vector products here); for
+a crystal they can be given analytically. (iv) Maxent with
+many exact moments stops converging (Sec. III B); KPM
+then remains the tool for maximum resolution. (v) The
+DFTB matrices are large: ≈ 190 nonzeros per row.
+√ (vi)
+The statistical error of a moment decreases with N R,
+so large systems need few vectors, but the band energy
+per atom of one 4096-atom cell with R = 6 vectors has
+an uncertainty of tens of meV/atom (Table III) unless
+exact moments or impartial vectors are used (Table I);
+integrated quantities should be reported with their error. (vii) Finally, all numbers are Γ-point values for one
+structure each; the dependence on the structure and the
+cell size is a separate question.
+
+10
+TABLE VII. Non-orthogonal case: DFTB (pbc-0-3, non-self-consistent) H and S on tilings of DTW4096, KPM with M = 100,
+R = 2; time of the whole density-of-states call for the three ways of applying S −1 (PCG with block-Jacobi, Chebyshev
+polynomial, PCG with IC(0)). IC(0) was run only for the small sizes (its setup is a Python loop).
+atoms
+
+orbitals
+
+nnz/row
+
+4 096
+32 768
+110 592
+
+16 384
+131 072
+442 368
+
+179
+179
+179
+
+build
+(s)
+1
+4
+15
+
+PCG (BJ)
+(s)
+15
+117
+380
+
+101
+
+102
+101
+Kwon (orthogonal): total
+moments only
+DFTB, PCG block-Jacobi
+DFTB, Chebyshev B −1
+
+100
+
+peak memory (GB)
+
+wall time (s), M = 100, R = 2
+
+(a) time
+
+Chebyshev
+(s)
+18
+142
+398
+
+PCG (IC(0))
+(s)
+35
+288
+–
+
+peak mem.
+(GB)
+0.3
+1.8
+5.8
+
+(b) memory
+Kwon
+DFTB (H, S)
+
+100
+
+∝N
+
+10−1
+105
+
+orbitals N
+
+105
+
+106
+
+orbitals N
+
+106
+
+FIG. 5. Cost scaling on tilings of DTW4096 (M = 100, R = 2). (a) Wall time against the number of orbitals: orthogonal
+Kwon (total and moments only), non-orthogonal DFTB with PCG/block-Jacobi and with the Chebyshev B −1 ; dotted: linear
+scaling. (b) Peak memory.
+
+VI.
+
+RECOMMENDATIONS
+
+1. KPM is the default: linear, positive (Jackson),
+never fails, resolution πa/M ; for the maximum resolution of a large system increase M (a few thousand is cheap; cost is linear in M ). Beyond the
+mean level spacing or the noise floor, more moments only sharpen sampling speckle.
+2. Maxent when high-order moments are expensive
+or noisy (M ≲ 300), when positivity and sharp
+edges matter, and for integrated quantities (band
+energy, gap region); it extracted 6–10× lower errors
+from identical moments here. Use the bootstrapped
+solver; expect it to stop at a few hundred exact
+moments of singular densities.
+3. Random vectors: the default exact-moment substitution (K = 4) is almost always worth it; K = 8
+for band energies; impartial vectors constrain only
+three moments and are nearly as eﬀicient at lower
+cost per vector (Table I).
+4. Generalized problems: PCG with block-Jacobi
+is the default; the Chebyshev polynomial gives an
+exact polynomial map when the conditioning is
+
+known; IC(0) lowers the iteration count if its setup
+is cheap.
+5. Report the sampling error of every integrated
+quantity, and overlay KPM and Maxent: where
+they agree, the feature is in the moments.
+VII.
+
+CONCLUSIONS AND AVAILABILITY
+
+sdos computes densities of states and related spectral
+quantities of very large sparse Hermitian and generalized
+problems with a documented, tested, open implementation. Its ingredients are established (stochastic traces,
+KPM, Maxent, non-orthogonal KPM by PCG); what we
+add is the combination, the options for the overlap inverse, bootstrapped Maxent, windows, projections and
+interfaces, and a quantitative validation against exact diagonalization and independent codes at sizes from 103 to
+8 × 106 orbitals. We found linear scaling in all momentbased computations, three conventions of the DFTB file
+format that are not in the format description, and prior
+art that we credit. The limits are stated above.
+Availability. The package is licensed under BSD-3Clause (copyright D. A. Drabold, 2026) and lives in a local repository that has not yet been released; the DFTB
+
+11
+parameter files are not bundled. All scripts, saved results and the generation of the figures and tables of this
+report are in the examples/ and paper/ directories of
+the repository; the tests run with pytest.
+
+[1] J. Skilling, The eigenvalues of mega-dimensional matrices, in Maximum Entropy and Bayesian Methods
+(Springer, Dordrecht, 1989) pp. 455–466.
+[2] M. Hutchinson, A stochastic estimator of the trace of the
+influence matrix for laplacian smoothing splines, Communications in Statistics - Simulation and Computation
+19, 433 (1990).
+[3] R. SILVER and H. RÖDER, Densities of states of megadimensional hamiltonian matrices, International Journal
+of Modern Physics C 5, 735 (1994).
+[4] R. Silver, H. Roeder, A. Voter, and J. Kress, Kernel polynomial approximations for densities of states and spectral functions, Journal of Computational Physics 124,
+115 (1996).
+[5] A. Weiße, G. Wellein, A. Alvermann, and H. Fehske, The
+kernel polynomial method, Reviews of Modern Physics
+78, 275 (2006).
+[6] D. Jackson, On approximation by trigonometric sums
+and polynomials, Transactions of the American Mathematical Society 13, 491 (1912).
+[7] L. R. Mead and N. Papanicolaou, Maximum entropy
+in the problem of moments, Journal of Mathematical
+Physics 25, 2404 (1984).
+[8] I. Turek, A maximum-entropy approach to the density
+of states within the recursion method, Journal of Physics
+C: Solid State Physics 21, 3251 (1988).
+[9] D. A. Drabold and O. F. Sankey, Maximum entropy approach for linear scaling in the electronic structure problem, Physical Review Letters 70, 3631 (1993).
+[10] S. Goedecker, Linear scaling electronic structure methods, Reviews of Modern Physics 71, 1085 (1999).
+[11] R. Haydock, V. Heine, and M. J. Kelly, Electronic structure based on the local atomic environment for tightbinding bands, Journal of Physics C: Solid State Physics
+5, 2845 (1972).
+[12] L.-W. Wang, Calculating the density of states and
+optical-absorption spectra of large quantum systems by
+the plane-wave moments method, Physical Review B 49,
+10154 (1994).
+[13] S. Goedecker and L. Colombo, Eﬀicient linear scaling algorithm for tight-binding molecular dynamics, Physical
+Review Letters 73, 122 (1994).
+[14] L. Lin, Y. Saad, and C. Yang, Approximating spectral
+densities of large matrices, SIAM Review 58, 34 (2016).
+[15] H. Röder, R. N. Silver, and J. D. Kress, The kernel
+polynomial method for non-orthogonal electronic structure calculations, in High Performance Computing 1996:
+Grand Challenges in Computer Simulation, edited by
+A. Tentner (Society for Computer Simulation, San Diego,
+
+ACKNOWLEDGMENTS
+
+The package and this report were prepared with the assistance of Claude (Anthropic), under the author’s direction; the author is responsible for all scientific statements
+and takes the decisions on scope, naming and licensing.
+We acknowledge the Frauenheim group’s pbc-0-3 Slater–
+Koster set (CC BY-SA 4.0), whose required references we
+cite.
+
+1996) report CONF-960482, OSTI ID 390779.
+[16] S. M. João, M. Anđelković, L. Covaci, T. G. Rappoport, J. M. V. P. Lopes, and A. Ferreira, Kite: highperformance accurate modelling of electronic structure
+and response functions of large molecules, disordered
+crystals and heterostructures, Royal Society Open Science 7, 191809 (2020).
+[17] C. W. Groth, M. Wimmer, A. R. Akhmerov, and
+X. Waintal, Kwant: a software package for quantum
+transport, New Journal of Physics 16, 063065 (2014).
+[18] Y. Li, Z. Zhan, X. Kuang, Y. Li, and S. Yuan, Tbplas:
+A tight-binding package for large-scale simulation, Computer Physics Communications 285, 108632 (2023).
+[19] J. A. Meijerink and H. A. van der Vorst, An iterative
+solution method for linear systems of which the coeﬀicient matrix is a symmetric m-matrix, Mathematics of
+Computation 31, 148 (1977).
+[20] T. A. Manteuffel, An incomplete factorization technique
+for positive definite linear systems, Mathematics of Computation 34, 473 (1980).
+[21] Y. Zhou, Y. Saad, M. L. Tiago, and J. R. Chelikowsky,
+Self-consistent-field calculations using chebyshev-filtered
+subspace iteration, Journal of Computational Physics
+219, 172 (2006).
+[22] R. S. Mulliken, Electronic population analysis on lcao–
+mo molecular wave functions. i, The Journal of Chemical
+Physics 23, 1833 (1955).
+[23] C. R. Harris, K. J. Millman, S. J. van der Walt, R. Gommers, P. Virtanen, D. Cournapeau, et al., Array programming with numpy, Nature 585, 357 (2020).
+[24] P. Virtanen, R. Gommers, T. E. Oliphant, M. Haberland,
+T. Reddy, D. Cournapeau, et al., Scipy 1.0: fundamental algorithms for scientific computing in python, Nature
+Methods 17, 261 (2020).
+[25] I. Kwon, R. Biswas, C. Z. Wang, K. M. Ho, and C. M.
+Soukoulis, Transferable tight-binding models for silicon,
+Physical Review B 49, 7242 (1994).
+[26] C. H. Xu, C. Z. Wang, C. T. Chan, and K. M. Ho, A
+transferable tight-binding potential for carbon, Journal
+of Physics: Condensed Matter 4, 6047 (1992).
+[27] T. Frauenheim, The pbc-0-3 slater–koster parameter set,
+Universität Bremen, CC BY-SA 4.0 (dftb.org) (2017).
+[28] A. Sieck, Doctoral thesis, Ph.D. thesis, University of
+Paderborn (2000), cited as required by the README
+of the pbc-0-3 Slater–Koster set.
+[29] A. Sieck, T. Frauenheim, and K. A. Jackson, Shape transition of medium‐sized neutral silicon clusters, physica
+status solidi (b) 240, 537 (2003).
+
+12
+[30] D. Porezag, T. Frauenheim, T. Köhler, G. Seifert, and
+R. Kaschner, Construction of tight-binding-like potentials on the basis of density-functional theory: Application to carbon, Physical Review B 51, 12947 (1995).
+[31] N. Papior, sisl: a python package for tight-binding,
+dft and siesta post-processing, https://github.com/
+zerothi/sisl.
+[32] J. M. Soler, E. Artacho, J. D. Gale, A. García, J. Junquera, P. Ordejón, and D. Sánchez-Portal, The siesta
+method for ab initio order- n materials simulation, Journal of Physics: Condensed Matter 14, 2745 (2002).
+[33] A. García, N. Papior, A. Akhtar, E. Artacho, V. Blum,
+E. Bosoni, et al., S iesta : Recent developments and applications, The Journal of Chemical Physics 152, 204108
+(2020).
+[34] A. P. Thompson, H. M. Aktulga, R. Berger, D. S. Bolintineanu, W. M. Brown, P. S. Crozier, et al., Lammps - a
+flexible simulation tool for particle-based materials modeling at the atomic, meso, and continuum scales, Computer Physics Communications 271, 108171 (2022).
+[35] B. Hourahine, B. Aradi, V. Blum, F. Bonafé, A. Buccheri, C. Camacho, et al., Dftb+, a software package
+for eﬀicient approximate density functional theory based
+atomistic simulations, The Journal of Chemical Physics
+152, 124101 (2020).
+[36] B. R. Djordjević, M. F. Thorpe, and F. Wooten, Computer model of tetrahedral amorphous diamond, Physical
+Review B 52, 5685 (1995).
+
+[37] R. Drautz, Atomic cluster expansion for accurate and
+transferable interatomic potentials, Physical Review B
+99, 014104 (2019).
+[38] Y. Lysogorskiy, C. v. d. Oord, A. Bochkarev, S. Menon,
+M. Rinaldi, T. Hammerschmidt, et al., Performant implementation of the atomic cluster expansion (pace) and
+application to copper and silicon, npj Computational Materials 7, 97 (2021).
+[39] F. H. Stillinger and T. A. Weber, Computer simulation
+of local order in condensed phases of silicon, Physical
+Review B 31, 5262 (1985).
+[40] V. L. Deringer, N. Bernstein, G. Csányi, C. Ben Mahmoud, M. Ceriotti, M. Wilson, D. A. Drabold, and S. R.
+Elliott, Origins of structural and electronic transitions in
+disordered silicon, Nature 589, 59 (2021).
+[41] D. A. Drabold, P. Ordejón, J. Dong, and R. M. Martin,
+Spectral properties of large fullerenes: From cluster to
+crystal, Solid State Communications 96, 833 (1995).
+[42] S. Itoh, P. Ordejón, D. A. Drabold, and R. M. Martin,
+Structure and energetics of giant fullerenes: An ordernmolecular-dynamics study, Physical Review B 53, 2132
+(1996).
+[43] J. H. Los and A. Fasolino, Intrinsic long-range bondorder potential for carbon: Performance in monte carlo
+simulations of graphitization, Physical Review B 68,
+024107 (2003).
+
+

@@ -1,0 +1,10 @@
+\begin{table*}[t]\caption{Harmonic thermodynamics of DTW4096 (4096 atoms, relaxed with each potential): matrix-free sdos ($M=170$, $R=4$, two force calls per product, three rigid translations removed exactly) against the exact dynamical matrix. $C_v$ in $k_B$/atom.}\label{tab:ph}\begin{ruledtabular}\begin{tabular}{llrrrr}
+potential & method & ZPE (meV/atom) & $C_v$(100 K) & $C_v$(300 K) & $C_v$(600 K) \\ \colrule
+SW & exact (dense) & 66.935 & 0.8558 & 2.2935 & 2.7863 \\
+SW & sdos KPM & 66.573 & 0.8637 & 2.3002 & 2.7890 \\
+SW & sdos Maxent & 66.546 & 0.8647 & 2.3007 & 2.7892 \\
+\colrule
+ACE & exact (GPU \texttt{dynamical\_matrix}) & 60.104 & 0.9369 & 2.4127 & 2.8294 \\
+ACE & sdos KPM & 59.709 & 0.9499 & 2.4192 & 2.8319 \\
+ACE & sdos Maxent & 59.709 & 0.9499 & 2.4193 & 2.8319 \\
+\end{tabular}\end{ruledtabular}\end{table*}

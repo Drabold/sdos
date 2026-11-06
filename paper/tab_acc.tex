@@ -1,0 +1,10 @@
+\begin{table*}[t]\caption{Truncation error on DTW4096 (Kwon, $\Gamma$) with \emph{exact} moments (no sampling noise): band-energy error and $L_1$ distance to the exact spectrum broadened by 0.05~eV. Maxent: exact-moment constraints; dashes: the solver did not reach tolerance $10^{-9}$ in 300 Newton steps, so no result is reported (no steps are listed either). Maxent $s_0$: every moment but $\mu_0$ given the uncertainty $s_0=10^{-4}$ (Sec.~\ref{sec:recon}); all converged.}\label{tab:acc}\begin{ruledtabular}\begin{tabular}{rrrrrrrrr}
+$M$ & \multicolumn{3}{c}{$\Delta E_{\rm BS}$ (meV/atom)} & \multicolumn{3}{c}{pointwise $L_1$} & \multicolumn{2}{c}{Newton steps} \\ & KPM & Maxent & Maxent $s_0$ & KPM & Maxent & Maxent $s_0$ & Maxent & Maxent $s_0$ \\ \colrule
+20 & $-198.23$ & $+22.52$ & $+22.52$ & 3.3493 & 0.1122 & 0.1122 & 9 & 9 \\
+40 & $-18.24$ & $+1.56$ & $+1.56$ & 0.2862 & 0.0383 & 0.0383 & 11 & 11 \\
+70 & $-0.99$ & $+0.12$ & $+0.10$ & 0.0715 & 0.0116 & 0.0114 & 34 & 17 \\
+100 & $+0.26$ & -- & $+0.02$ & 0.0332 & -- & 0.0082 & -- & 22 \\
+170 & $+0.30$ & -- & $-0.00$ & 0.0119 & -- & 0.0068 & -- & 23 \\
+300 & $+0.14$ & -- & $-0.01$ & 0.0053 & -- & 0.0082 & -- & 24 \\
+400 & $+0.09$ & -- & $-0.02$ & 0.0037 & -- & 0.0123 & -- & 22 \\
+\end{tabular}\end{ruledtabular}\end{table*}

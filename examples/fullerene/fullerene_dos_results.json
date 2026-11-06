@@ -1,0 +1,100 @@
+{
+ "60": {
+  "orbitals": 240,
+  "seconds": 2.8,
+  "nsolve": 1537,
+  "pcg_iterations": 81353,
+  "iters_per_solve": 52.9,
+  "resolution": 0.13312205907897867,
+  "window": [
+   -19.880338940407903,
+   22.49372853357366
+  ]
+ },
+ "240": {
+  "orbitals": 960,
+  "seconds": 7.6,
+  "nsolve": 1537,
+  "pcg_iterations": 90045,
+  "iters_per_solve": 58.6,
+  "resolution": 0.1381566899679738,
+  "window": [
+   -19.95289234741673,
+   24.023747911818276
+  ]
+ },
+ "540": {
+  "orbitals": 2160,
+  "seconds": 14.7,
+  "nsolve": 1537,
+  "pcg_iterations": 90657,
+  "iters_per_solve": 59.0,
+  "resolution": 0.13872517054819425,
+  "window": [
+   -19.908604973481047,
+   24.248988274541617
+  ]
+ },
+ "960": {
+  "orbitals": 3840,
+  "seconds": 24.8,
+  "nsolve": 1537,
+  "pcg_iterations": 90719,
+  "iters_per_solve": 59.0,
+  "resolution": 0.13897660059523476,
+  "window": [
+   -19.896052078296073,
+   24.341573839383237
+  ]
+ },
+ "2160": {
+  "orbitals": 8640,
+  "seconds": 40.6,
+  "nsolve": 1038,
+  "pcg_iterations": 61279,
+  "iters_per_solve": 59.0,
+  "resolution": 0.13931329825971983,
+  "window": [
+   -19.94143697962325,
+   24.40336313331665
+  ]
+ },
+ "S960": {
+  "lam_min": 0.13618918278813458,
+  "lam_max": 2.77157045984827,
+  "cond": 20.350885460263896,
+  "bandwidth_generalized": 43.1711513683796,
+  "bandwidth_S_ignored": 55.61287724521097
+ },
+ "binv_benchmark_C960": {
+  "none": {
+   "iterations": 62,
+   "seconds": 0.01,
+   "residual": 7.649494820427487e-13
+  },
+  "block-jacobi": {
+   "iterations": 62,
+   "seconds": 0.02,
+   "residual": 7.64949484731106e-13
+  },
+  "ic": {
+   "iterations": 46,
+   "seconds": 6.42,
+   "residual": 9.46682369504573e-13
+  },
+  "amg": {
+   "iterations": 20,
+   "seconds": 0.14,
+   "residual": 4.019179256908995e-13
+  },
+  "chebyshev": {
+   "degree": 65,
+   "kappa_scaled": 21.18153382987335,
+   "poly_err": 5.598854713184664e-13
+  }
+ },
+ "pdos": {
+  "pentagon_atoms": 60,
+  "hexagon_atoms": 2100
+ }
+}

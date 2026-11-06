@@ -1,0 +1,11 @@
+units metal
+boundary p p p
+atom_style atomic
+atom_modify map array sort 0 0.0
+read_data r10_rep3.data
+include /home/drabold/lammps-runs/rosset_external/pot_kk.in
+neighbor 1.0 bin
+group home id 1:216
+thermo_style custom step pe fnorm fmax press
+run 0
+dynamical_matrix home regular 0.005 file dm_home.dat binary no

@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sdos"
+version = "0.1.0"
+description = "Order-N spectral density of states (KPM, Maxent, shift-invert) for large sparse Hermitian problems"
+readme = "README.md"
+requires-python = ">=3.9"
+license = "BSD-3-Clause"
+license-files = ["LICENSE"]
+authors = [{ name = "David A. Drabold", email = "drabold@ohio.edu" }]
+keywords = ["density of states", "kernel polynomial method", "maximum entropy", "sparse eigenvalue", "tight binding", "vibrational spectra"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering :: Physics",
+]
+dependencies = ["numpy>=1.22", "scipy>=1.8"]
+
+[project.optional-dependencies]
+plot = ["matplotlib"]
+amg = ["pyamg"]
+sisl = ["sisl"]
+test = ["pytest"]
+
+[project.scripts]
+sdos = "sdos.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["slow: slower tests excluded from CI (run with -m slow)"]

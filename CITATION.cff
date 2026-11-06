@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "sdos: order-N spectral density of states for large sparse Hermitian problems"
+type: software
+version: 0.1.0
+license: BSD-3-Clause
+authors:
+  - family-names: Drabold
+    given-names: David A.
+    email: drabold@ohio.edu
+    affiliation: Ohio University
+# date-released, doi (Zenodo) and the arXiv reference are added at the first release.

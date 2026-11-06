@@ -1,0 +1,20 @@
+[
+ {
+  "n": 4,
+  "atoms": 262144,
+  "orbitals": 1048576,
+  "nnz_per_row": 179.267578125,
+  "t_build": 25.74298620223999,
+  "peak_rss_after_build_gb": 9.38466,
+  "chebyshev": {
+   "sec": 912.1990556716919,
+   "peak_rss_gb": 13.972136,
+   "binv": {
+    "kappa": 3.848395151095976,
+    "degree": 26.0,
+    "nsolve": 238.0,
+    "iterations": 6188.0
+   }
+  }
+ }
+]

@@ -1,0 +1,8 @@
+units metal
+boundary p p p
+atom_style atomic
+atom_modify map array sort 0 0.0
+read_data /home/drabold/lammps-runs/test/si512_dm_ref.data
+mass 1 28.0855
+pair_style pace
+pair_coeff * * /home/drabold/lammps-runs/test/SiH-ACE-25.yaml Si

@@ -1,0 +1,11 @@
+10:51 queue start
+10:57 si_time 32,48 exit 0
+11:25 kwon K=4 exit 143
+11:41 dftb chebyshev 262144 exit 0
+11:51 si_time 64 exit 0
+11:51 queue end
+12:03 kwon K=4 (fixed exact.py) exit 0
+12:08 pytest exit 0
+12:08 queue2 end
+12:30 si_time clean 32,48,64 exit 0
+12:30 queue3 end

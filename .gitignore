@@ -1,0 +1,15 @@
+build/
+dist/
+*.egg-info/
+__pycache__/
+.pytest_cache/
+# large run data (keep scripts and small result JSON; archive the data on Zenodo instead)
+examples/r10_million/*.data
+examples/r10_million/*.npy
+examples/r10_million/r10_kwon_curves.npz
+examples/r10_million/*.dat
+examples/morrow_vib/*.data
+examples/fullerene/*.npy
+*.log
+paper/*.aux
+paper/*.out

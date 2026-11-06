@@ -1,0 +1,9 @@
+{
+  "title": "sdos: order-N spectral density of states for large sparse Hermitian problems",
+  "upload_type": "software",
+  "description": "Python package that computes the density of states and related spectral quantities (band energy, Fermi level, local and projected DOS, harmonic thermodynamics) of very large sparse Hermitian matrices and generalized problems from Chebyshev moments estimated with random vectors; kernel polynomial method and maximum entropy reconstruction; tight-binding, DFTB, SIESTA and matrix-free LAMMPS interfaces.",
+  "creators": [{"name": "Drabold, David A.", "affiliation": "Ohio University"}],
+  "license": "BSD-3-Clause",
+  "keywords": ["density of states", "kernel polynomial method", "maximum entropy", "tight binding", "vibrational spectra", "sparse matrices"],
+  "access_right": "open"
+}
