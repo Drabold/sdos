@@ -16,7 +16,8 @@ The underlying methods are due to Silver, Röder, Kress, Voter, Drabold, Sankey 
 
 ## Install
 
-    pip install -e ".[test]"        # from a clone; add [plot] for matplotlib, [amg] for the AMG preconditioner
+    pip install sdos                 # from PyPI (numpy and scipy are the only requirements)
+    pip install -e ".[test]"        # from a clone, to run the tests; add [plot] for matplotlib, [amg] for the AMG preconditioner
 
 ## The simple way
 
