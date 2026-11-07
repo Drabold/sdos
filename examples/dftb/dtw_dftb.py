@@ -11,7 +11,7 @@ mode = sys.argv[1]
 d = np.load("/home/drabold/lammps-runs/topoMC/voids/host4096_ref.npz")
 X, L = d["X"], d["L"]
 sk = skf.SKSet("/home/drabold/opt/slako/pbc-0-3", ["Si"])
-k = None if mode == "gamma" else 2 * np.pi * np.array([0.25 / L[0], 0.25 / L[1], 0.25 / L[2]])          # a (1/4,1/4,1/4) point of the cell's own reciprocal lattice
+k = None if mode == "gamma" else 2 * np.pi * np.array([0.25 / L[0], 0.25 / L[1], 0.25 / L[2]])          # k = (b1+b2+b3)/4: a quarter of each reciprocal-lattice vector of the cell (not a reciprocal-lattice vector, so a genuine twist)
 t = time.time()
 H, S = skf.skf_hamiltonian(X, ["Si"] * len(X), L, sk, kpoint=k)
 n = H.shape[0]

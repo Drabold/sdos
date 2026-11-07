@@ -1,5 +1,6 @@
 """Is the rise of the Maxent L1 error with M (DTW4096, Kwon, exact moments) due to the uncertainty floor s0?  Exact moments from the dense spectrum, Maxent with
-floors 1e-3 ... 1e-6 (each M), L1 distance to the exact spectrum broadened by 0.05 eV.  usage: python maxent_floor_scan.py -> maxent_floor_scan.json"""
+floors 1e-3 ... 1e-6 (each M), L1 distance to the exact spectrum broadened by 0.05 eV.  usage: python maxent_floor_scan.py -> maxent_floor_scan.json
+Note: this scan uses the Chebyshev default model and a fixed grid, so its L1 values differ slightly from Table IV of the report; the numbers quoted in the report come from examples/bench/bench_accuracy_floor.py (flat model, same grid as Table IV)."""
 import json, time, warnings; warnings.filterwarnings("ignore")
 import numpy as np
 from sdos.maxent import maxent_fit, maxent_density

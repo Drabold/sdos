@@ -12,6 +12,7 @@ def tab(name, cols, rows, caption, label, star=False, note=None):
     out.append("\n".join(s))
     open(f"tab_{name}.tex", "w").write(out[-1] + "\n")
 
+gb = lambda v: f"{v:.1f}" if v >= 1 else f"{v:.2g}"      # peak memory in GB: two significant digits (0.23, 1.4, 9.8, 14.0)
 # T: accuracy vs M
 A = L("bench/bench_accuracy.json")
 FL = L("bench/bench_accuracy_floor.json")
@@ -19,11 +20,12 @@ F = {r["M"]: r for r in FL if r["s0"] == 1e-4}; F0 = {r["M"]: r for r in FL if r
 rows = ["$M$ & \\multicolumn{3}{c}{$\\Delta E_{\\rm BS}$ (meV/atom)} & \\multicolumn{3}{c}{pointwise $L_1$} & \\multicolumn{2}{c}{Newton steps} \\\\ & KPM & Maxent & Maxent $s_0$ & KPM & Maxent & Maxent $s_0$ & Maxent & Maxent $s_0$ \\\\ \\colrule"]
 for m_, k, x in zip(A["M"], A["kpm"], A["maxent"]):
     ok = bool(x) and x["conv"]          # a nonconverged exact-moment Maxent result is not reported
-    mx = f"${x['dEBS']:+.2f}$" if ok else "--"
+    dp = 3 if m_ >= 100 else 2          # Delta E block: 3 decimals from M = 100 (values of order 0.01 meV/atom)
+    mx = f"${x['dEBS']:+.{dp}f}$" if ok else "--"
     ml = f"{x['L1']:.4f}" if ok else "--"
     f = F[m_]; assert f["conv"]
     ns = str(F0[m_]["it"]) if F0[m_]["conv"] else "--"
-    rows.append(f"{m_} & ${k['dEBS']:+.2f}$ & {mx} & ${f['dEBS']:+.2f}$ & {k['L1']:.4f} & {ml} & {f['L1']:.4f} & {ns} & {f['it']} \\\\")
+    rows.append(f"{m_} & ${k['dEBS']:+.{dp}f}$ & {mx} & ${f['dEBS']:+.{dp}f}$ & {k['L1']:.4f} & {ml} & {f['L1']:.4f} & {ns} & {f['it']} \\\\")
 tab("acc", "rrrrrrrrr", rows, "Truncation error on DTW4096 (Kwon, $\\Gamma$) with \\emph{exact} moments (no sampling noise): band-energy error and $L_1$ distance to the exact spectrum broadened by 0.05~eV. Maxent: exact-moment constraints; dashes: the solver did not reach tolerance $10^{-9}$ in 300 Newton steps, so no result is reported (no steps are listed either). Maxent $s_0$: every moment but $\\mu_0$ given the uncertainty $s_0=10^{-4}$ (Sec.~\\ref{sec:recon}); all converged.", "tab:acc", star=True)
 
 # T: vector kinds
@@ -33,14 +35,14 @@ rows = ["vectors & std (meV/at.) & time (s) & efficiency \\\\ \\colrule"]
 for r in E:
     eff = base / (r["std_meV"] ** 2 * r["sec"])
     rows.append(f"{r['kind'].replace('rademacher', 'Rad.').replace('gaussian', 'Gauss.').replace(' (3 moments)', ' (3)')} & {r['std_meV']:.1f} & {r['sec']:.2f} & {eff:.1f}$\\times$ \\\\")
-tab("vec", "lrrr", rows, "Random vectors and exact low moments, band energy of DTW4096 (Kwon, $M=100$, 12 seeds with $R=2$ each). Efficiency = (variance $\\times$ time)$^{-1}$ relative to plain Rademacher vectors; the uncertainty of each entry is about 30\\%.", "tab:vec")
+tab("vec", "lrrr", rows, "Random vectors and exact low moments, band energy of DTW4096 (Kwon, $M=100$, 12 seeds with $R=2$ each; std is the standard deviation of an estimate with $R=2$ vectors, $\\sqrt2$ times larger per vector). Efficiency = (variance $\\times$ time)$^{-1}$ relative to plain Rademacher vectors; the uncertainty of each entry is about 30\\%.", "tab:vec")
 
 # T: scaling Kwon
 K = L("bench/bench_kwon.json"); K4 = {r["n"]: r for r in L("bench/bench_kwon_k4.json")}
 rows = ["atoms & orbitals & build & bounds & moments & total & peak mem. & moments, $K=4$ & total, $K=4$ \\\\ & & (s) & (s) & (s) & (s) & (GB) & (s) & (s) \\\\ \\colrule"]
 for r in K:
     q = K4[r["n"]]
-    rows.append(f"{r['atoms']:,} & {r['orbitals']:,} & {r['t_build']:.1f} & {r['t_bounds']:.1f} & {r['t_moments']:.1f} & {r['t_build'] + r['t_bounds'] + r['t_moments']:.1f} & {r['peak_rss_gb']:.2g} & {q['t_moments']:.1f} & {q['t_build'] + q['t_bounds'] + q['t_moments']:.1f} \\\\".replace(",", "\\,"))
+    rows.append(f"{r['atoms']:,} & {r['orbitals']:,} & {r['t_build']:.1f} & {r['t_bounds']:.1f} & {r['t_moments']:.1f} & {r['t_build'] + r['t_bounds'] + r['t_moments']:.1f} & {gb(r['peak_rss_gb'])} & {q['t_moments']:.1f} & {q['t_build'] + q['t_bounds'] + q['t_moments']:.1f} \\\\".replace(",", "\\,"))
 tab("kw", "rrrrrrrrr", rows, "Orthogonal case: Kwon tight binding on periodic tilings of DTW4096, KPM with $M=100$ moments and $R=2$ vectors, 4 threads; columns 3--7: no exact-moment substitution ($K=0$); last two columns: the default $K=4$ (moments, and the whole call including build and bounds), from a separate run. Timings are one run each.", "tab:kw", star=True)
 
 # T: scaling DFTB
@@ -53,7 +55,7 @@ for r_ in L("bench/bench_skf_cheb_rerun.json"):            # Chebyshev row at 26
 rows = ["atoms & orbitals & nnz/row & build & PCG (BJ) & Chebyshev & PCG (IC(0)) & peak mem., PCG & peak mem., Cheb. \\\\ & & & (s) & (s) & (s) & (s) & (GB) & (GB) \\\\ \\colrule"]
 for r in S:
     g = lambda k: f"{r[k]['sec']:.0f}" if k in r and "sec" in r[k] else ("killed$^\\ddagger$" if k in r and "error" in r[k] else "--")
-    pkf = lambda k: (f"{r[k]['peak_rss_gb']:.2g}" if k in r and r[k].get("peak_rss_gb") else "--")
+    pkf = lambda k: (f"{gb(r[k]['peak_rss_gb'])}" if k in r and r[k].get("peak_rss_gb") else "--")
     rows.append(f"{r['atoms']:,} & {r['orbitals']:,} & {r['nnz_per_row']:.0f} & {('%.0f' % r['t_build']) if r.get('t_build') is not None else '--'} & {g('pcg_bj')} & {g('chebyshev')} & {g('pcg_ic')} & {pkf('pcg_bj')} & {pkf('chebyshev')} \\\\".replace(",", "\\,"))
 tab("sk", "rrrrrrrrr", rows, "Non-orthogonal case: DFTB ($pbc$-0-3, non-self-consistent) $H$ and $S$ on tilings of DTW4096, KPM with $M=100$, $R=2$; time of the whole density-of-states call for the three ways of applying $S^{-1}$ (PCG with block-Jacobi, Chebyshev polynomial, PCG with IC(0)). IC(0) was run only for the small sizes (its setup is a Python loop). At 262\\,144 atoms the Chebyshev row is a rerun under a 16~GB cap (peak 14.0~GB; the first attempt, under a 10~GB cap, was killed); the PCG row at that size was recovered from the log of the first run (peak 9.8~GB), and the build time is that of the rerun.", "tab:sk", star=True)
 

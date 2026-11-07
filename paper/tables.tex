@@ -3,13 +3,13 @@ $M$ & \multicolumn{3}{c}{$\Delta E_{\rm BS}$ (meV/atom)} & \multicolumn{3}{c}{po
 20 & $-198.23$ & $+22.52$ & $+22.52$ & 3.3493 & 0.1122 & 0.1122 & 9 & 9 \\
 40 & $-18.24$ & $+1.56$ & $+1.56$ & 0.2862 & 0.0383 & 0.0383 & 11 & 11 \\
 70 & $-0.99$ & $+0.12$ & $+0.10$ & 0.0715 & 0.0116 & 0.0114 & 34 & 17 \\
-100 & $+0.26$ & -- & $+0.02$ & 0.0332 & -- & 0.0082 & -- & 22 \\
-170 & $+0.30$ & -- & $-0.00$ & 0.0119 & -- & 0.0068 & -- & 23 \\
-300 & $+0.14$ & -- & $-0.01$ & 0.0053 & -- & 0.0082 & -- & 24 \\
-400 & $+0.09$ & -- & $-0.02$ & 0.0037 & -- & 0.0123 & -- & 22 \\
+100 & $+0.263$ & -- & $+0.017$ & 0.0332 & -- & 0.0082 & -- & 22 \\
+170 & $+0.297$ & -- & $-0.005$ & 0.0119 & -- & 0.0068 & -- & 23 \\
+300 & $+0.138$ & -- & $-0.012$ & 0.0053 & -- & 0.0082 & -- & 24 \\
+400 & $+0.085$ & -- & $-0.017$ & 0.0037 & -- & 0.0123 & -- & 22 \\
 \end{tabular}\end{ruledtabular}\end{table*}
 
-\begin{table}[t]\caption{Random vectors and exact low moments, band energy of DTW4096 (Kwon, $M=100$, 12 seeds with $R=2$ each). Efficiency = (variance $\times$ time)$^{-1}$ relative to plain Rademacher vectors; the uncertainty of each entry is about 30\%.}\label{tab:vec}\begin{ruledtabular}\begin{tabular}{lrrr}
+\begin{table}[t]\caption{Random vectors and exact low moments, band energy of DTW4096 (Kwon, $M=100$, 12 seeds with $R=2$ each; std is the standard deviation of an estimate with $R=2$ vectors, $\sqrt2$ times larger per vector). Efficiency = (variance $\times$ time)$^{-1}$ relative to plain Rademacher vectors; the uncertainty of each entry is about 30\%.}\label{tab:vec}\begin{ruledtabular}\begin{tabular}{lrrr}
 vectors & std (meV/at.) & time (s) & efficiency \\ \colrule
 Rad. & 192.8 & 0.23 & 1.0$\times$ \\
 Gauss. & 315.4 & 0.23 & 0.4$\times$ \\
@@ -34,7 +34,7 @@ atoms & orbitals & nnz/row & build & PCG (BJ) & Chebyshev & PCG (IC(0)) & peak m
 4\,096 & 16\,384 & 179 & 1 & 15 & 18 & 35 & 0.35 & 0.35 \\
 32\,768 & 131\,072 & 179 & 4 & 117 & 142 & 288 & 1.4 & 1.8 \\
 110\,592 & 442\,368 & 179 & 15 & 380 & 398 & -- & 4.3 & 5.8 \\
-262\,144 & 1\,048\,576 & 179 & 26 & 806 & 912 & -- & 9.8 & 14 \\
+262\,144 & 1\,048\,576 & 179 & 26 & 806 & 912 & -- & 9.8 & 14.0 \\
 \end{tabular}\end{ruledtabular}\end{table*}
 
 \begin{table*}[t]\caption{DFTB electronic problem of DTW4096 (16\,384 orbitals, 179 nonzeros per row): KPM, $M=170$, $R=6$. At $\Gamma$ the three ways of applying $S^{-1}$ give identical band energies (the same moments); the error is against the dense generalized spectrum and is a sampling error (this run, seed 11: $-70$~meV/atom, with $\pm35$ the standard error estimated from its six vectors; other seeds give $-122$, $+69$ and $+153$~meV/atom with estimated errors of 84--94, so that estimate is itself uncertain and the spread over seeds, about 110~meV/atom at $R=6$, is the reliable figure; see text), and $L_1$ is the distance to the exact spectrum broadened by 0.1~eV. The dense complex generalized problem does not fit in memory here, so the $\mathbf k$ point is compared with the $\Gamma$ spectrum of the same cell.}\label{tab:dd}\begin{ruledtabular}\begin{tabular}{lrrrrrrr}
