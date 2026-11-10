@@ -89,3 +89,5 @@ Every option below is a keyword of `sdos.dos` / `sdos.estimate_dos` (and a flag 
 
 Archived on Zenodo, concept DOI [10.5281/zenodo.24023874](https://doi.org/10.5281/zenodo.24023874) (always the latest version); see `CITATION.cff`.
 
+Paper: [arXiv:2611.11310](https://arxiv.org/abs/2611.11310).
+

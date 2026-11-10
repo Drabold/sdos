@@ -12,3 +12,10 @@ authors:
 date-released: "2026-11-06"
 doi: 10.5281/zenodo.24023874
 repository-code: "https://github.com/Drabold/sdos"
+identifiers:
+  - type: other
+    value: "arXiv:2611.11310"
+    description: "Accompanying paper"
+  - type: url
+    value: "https://arxiv.org/abs/2611.11310"
+    description: "Accompanying paper (arXiv)"
